@@ -1,0 +1,201 @@
+﻿@model Stock_keeping.Models.Branch
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Branch</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Branch </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#branchCreateModal">Add New Branch</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Branch Name
+                                    </th>
+                                    <th style="color:white;">
+                                        Branch Code
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.Branch)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.BranchName
+                                        </td>
+                                        <td>
+                                            @item.BranchCode
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#editModal" title="Update Branch" selectedName="@item.BranchName" selectedCode="@item.BranchCode" selectedId="@item.Id">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                @*    <a class="btn btn-success text-white mx-2" asp-action="Details" asp-route-Id="@Model">
+                                                    <i class="bi bi-card-list"></i>Details
+                                                    </a>*@
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <partial name="~/Views/Shared/BranchPartialViews/_BranchCreateModalPartialView.cshtml" />
+    <!-- Edit modal -->
+    <partial name="~/Views/Shared/BranchPartialViews/_BranchEditModalPartialView.cshtml" />
+    <!-- Delete modal -->
+    <partial name="~/Views/Shared/BranchPartialViews/_BranchDeleteModalPartialView.cshtml" />
+</div>
+
+@section Scripts{
+<script>
+
+     //CREATE CATEGIRY SCRIPTS
+     $(document).ready(function(){
+         $("#btnSave").click(function(event) {
+
+             event.preventDefault();
+             var branch = {
+
+                 BranchName: branchFormData.name.value,
+                 BranchCode: branchFormData.branchCode.value
+
+             }
+             $.ajax({
+                     type: "POST",
+                     url: "/Branch/Create",
+                     //data: JSON.stringify(PostCustomer),
+                     data: branch,
+                     dataType: "json",
+                     //contentType: 'application/json; charset=utf-8',
+                     traditional: true,
+                     success: function(r){
+
+                         if(r.msg == "success"){
+                              window.location.href="/Branch/Index";
+                         }
+                     }
+             })
+         })
+     })
+
+
+     //EDIT CATEGORY SCRIPTS
+    $(document).delegate("#btnEdit","click",function(e){
+
+         BranchName = $(this).attr('selectedName');
+         BranchCode = $(this).attr('selectedCode');
+         Id = $(this).attr('selectedId');
+
+
+         var branchName = $("#editName");
+         var branchCode = $("#editBranchCode");
+         var branchId = $("#editId");
+
+
+         branchName.val(BranchName);
+         branchCode.val(BranchCode);
+         branchId.val(Id);
+
+        $("#btnEditSave").click(function(event) {
+
+            console.log('click');
+            event.preventDefault();
+            var branchData = {
+
+                BranchName: $('#editName').val(),
+                BranchCode: $('#editBranchCode').val(),
+                Id: $('#editId').val(),
+
+
+            }
+            $.ajax({
+                    type: "POST",
+                    url: "/Branch/Edit",
+                    //data: JSON.stringify(PostCustomer),
+                    data: branchData,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                             window.location.href="/Branch/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+    //DELETE CATEGORY SCRIPTS
+    $(document).delegate("#btnDelete","click",function(e){
+        Id = $(this).attr('selectedId');
+        $("#btnDeleteSave").click(function(event) {
+            event.preventDefault();
+
+            var branchDataId = {
+                Id: Id,
+            }
+            $.ajax({
+                    type: "POST",
+                    url: "/Branch/Delete",
+                    //data: JSON.stringify(PostCustomer),
+                    data: branchDataId,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                                window.location.href="/Branch/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+</script>
+}

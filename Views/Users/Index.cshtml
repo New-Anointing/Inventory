@@ -1,0 +1,106 @@
+﻿@model IEnumerable<ApplicationUser>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Users List</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Users </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <a type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-area="Identity" asp-page="/Account/UserRegister">Add New User</a>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        User First Name
+                                    </th>
+                                    <th style="color:white;">
+                                        User Last Name
+                                    </th>
+                                    <th style="color:white;">
+                                        User Email
+                                    </th>
+                                    <th style="color:white;">
+                                        User PhoneNumber
+                                    </th>
+                                    <th style="color:white;">
+                                        User Role
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @user.FirstName
+                                        </td>
+                                        <td>
+                                            @user.LastName
+                                        </td>
+                                        <td>
+                                            @user.Email
+                                        </td>
+                                        <td>
+                                            @user.PhoneNumber
+                                        </td>
+                                        <td>
+                                            @user.RoleName
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                @if(user.LockoutEnd==null || user.LockoutEnd < DateTime.Now)
+                                                {
+                                                    <a class="btn btn-primary text-white mx-2" asp-action="Lock" asp-route-id="@user.Id">
+                                                        <i class="bi bi-unlock"></i>
+                                                    </a>   
+                                                }else{
+                                                    <a class="btn btn-danger text-white mx-2" asp-action="Unlock" asp-route-id="@user.Id">
+                                                        <i class="bi bi-lock"></i>
+                                                    </a>
+
+                                                }
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+</div>
+
+@section Scripts{
+}

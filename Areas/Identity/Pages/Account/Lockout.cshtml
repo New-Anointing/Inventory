@@ -1,0 +1,39 @@
+﻿@page
+@model LockoutModel
+@{
+    Layout = "";
+}
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="~/css/site.css">
+
+    <title>Locked Out - Inventory</title>
+</head>
+<body class="lockout-body">
+
+    <header class="lockout-header">
+        <div class="lockout-div">
+            <h1 class="text-danger">OOPS!</h1>
+            <h3 class="text-danger">Locked Out</h3>  
+            <p class="text-danger">This account has been locked out, please try again later or contact the admin.</p>
+            <a class="loginLinkBtn" asp-area="Identity" asp-page="/Account/Login">Go Back To Login Page</a>
+
+        </div>
+    </header>
+
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+</body>
+</html>

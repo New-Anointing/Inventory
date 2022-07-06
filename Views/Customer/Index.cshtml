@@ -1,0 +1,267 @@
+﻿@model Stock_keeping.Models.Customer
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Supplier</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Customer </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#customerCreateModal">Add New Customer</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Customer Name
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer Code
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer Address
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer Phonenumber
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer Email Address
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer Country
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer State
+                                    </th>
+                                    <th style="color:white;">
+                                        Customer City
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.Customer)
+                                {
+                                    <tr>
+                                        <td>
+                    
+                                            @item.CustomerName
+                                        </td>
+                                        <td>
+                                            @item.Code
+                                        </td>
+                                        <td>
+                                            @item.Address
+                                        </td>
+                                        <td>
+                                            @item.PhoneNumber
+                                        </td>
+                                        <td>
+                                            @item.Email
+                                        </td>
+                                        <td>
+                                            @item.Country
+                                        </td>
+                                        <td>
+                                            @item.State
+                                        </td>
+                                        <td>
+                                            @item.City
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#customerEditModal" title="Update Supplier" selectedName="@item.CustomerName" selectedCode="@item.Code" selectedId="@item.Id" selectedAddress="@item.Address" selectedNumber="@item.PhoneNumber" selectedEmail="@item.Email" selectedCountry="@item.Country" selectedState="@item.State" selectedCity="@item.City">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                @*    <a class="btn btn-success text-white mx-2" asp-action="Details" asp-route-Id="@Model">
+                                                    <i class="bi bi-card-list"></i>Details
+                                                    </a>*@
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <partial name="~/Views/Shared/CustomerPartialViews/_CustomerCreateModalPartialView.cshtml" />
+   <!-- Edit modal -->
+    <partial name="~/Views/Shared/CustomerPartialViews/_CustomerEditModalPartialView.cshtml" />
+    <!-- Delete modal -->
+    <partial name="~/Views/Shared/CustomerPartialViews/_CustomerDeleteModalPartialView.cshtml" />
+</div>
+
+@section Scripts{
+<script>
+
+     //CREATE CUSTOMER SCRIPTS
+     $(document).ready(function(){
+         $("#btnSave").click(function(event) {
+
+             event.preventDefault();
+             var customer = {
+
+                 CustomerName: customerFormData.name.value,
+                 Code: customerFormData.customerCode.value,
+                 Address: customerFormData.customerAddress.value,
+                 PhoneNumber: customerFormData.customerPhonenumber.value,
+                 Email: customerFormData.customerEmail.value,
+                 Country: customerFormData.customerCountry.value,
+                 State: customerFormData.customerState.value,
+                 City: customerFormData.customerCity.value
+
+             }
+             console.log(customer);
+             $.ajax({
+                     type: "POST",
+                     url: "/Customer/Create",
+                     //data: JSON.stringify(PostCustomer),
+                     data: customer,
+                     dataType: "json",
+                     //contentType: 'application/json; charset=utf-8',
+                     traditional: true,
+                     success: function(r){
+
+                         if(r.msg == "success"){
+                              window.location.href="/Customer/Index";
+                         }
+                     }
+             })
+         })
+     })
+
+
+     //EDIT CUSTOMER SCRIPTS
+    $(document).delegate("#btnEdit","click",function(e){
+
+         CustomerName = $(this).attr('selectedName');
+         CustomerCode = $(this).attr('selectedCode');
+         CustomerAddress = $(this).attr('selectedAddress');
+         CustomerPhonenumber = $(this).attr('selectedNumber');
+         EmailAddress = $(this).attr('selectedEmail');
+         countryVal = $(this).attr('selectedCountry');
+         stateVal = $(this).attr('selectedState');
+         cityVal = $(this).attr('selectedCity');
+         idVal = $(this).attr('selectedId');
+
+
+         var customerName = $("#editName");
+         var Code = $("#editCustomerCode");
+         var Address = $('#editCustomerAddress');
+         var Phone = $('#editCustomerPhonenumber');
+         var Email = $('#editCustomerEmail');
+         var Country = $('#editCustomerCountry');
+         var State = $('#editCustomerState');
+         var City = $('#editCustomerCity');
+         var Id = $("#editId");
+
+
+         customerName.val(CustomerName);
+         Code.val(CustomerCode);
+         Address.val(CustomerAddress);
+         Phone.val(CustomerPhonenumber);
+         Email.val(EmailAddress);
+         Country.val(countryVal);
+         State.val(stateVal);
+         City.val(cityVal);
+         Id.val(idVal);
+
+        $("#btnEditSave").click(function(event) {
+
+            console.log('click');
+            event.preventDefault();
+
+            var customerData = {
+                CustomerName: $('#editName').val(),
+                Code: $('#editCustomerCode').val(),
+                Address: $('#editCustomerAddress').val(),
+                PhoneNumber: $('#editCustomerPhonenumber').val(),
+                Email: $('#editCustomerEmail').val(),
+                Country: $('#editCustomerCountry').val(),
+                State: $('#editCustomerState').val(),
+                City: $('#editCustomerCity').val(),
+                Id: parseInt($('#editId').val()),
+            }
+            $.ajax({
+                    type: "POST",
+                    url: "/Customer/Edit",
+                    //data: JSON.stringify(PostCustomer),
+                    data: customerData,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                             window.location.href="/Customer/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+    //DELETE CUSTOMER SCRIPTS
+    $(document).delegate("#btnDelete","click",function(e){
+        Id = $(this).attr('selectedId');
+        $("#btnDeleteSave").click(function(event) {
+            event.preventDefault();
+
+            var supplierDataId = {
+                Id: parseInt(Id),
+            }
+            $.ajax({
+                    type: "DELETE",
+                    url: "/Customer/Delete",
+                    //data: JSON.stringify(PostCustomer),
+                    data: supplierDataId,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                                window.location.href="/Customer/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+</script>
+}

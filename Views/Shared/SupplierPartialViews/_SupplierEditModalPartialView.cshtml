@@ -1,0 +1,54 @@
+﻿
+    <!-- Modal -->
+    <div class="modal fade" id="supplierEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Edit Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="supplierFormData">
+                        <input id="editId" hidden />
+                        <div class="form-group mb-3">
+                            <label>Supplier Name</label>
+                            <input class="form-control" id="editName" name="name" type="text" placeholder="Supplier Name">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier Code</label>
+                            <input class="form-control" id="editSupplierCode" name="supplierCode" type="text" placeholder="Supplier Code">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier Address</label>
+                            <input class="form-control" id="editSupplierAddress" name="supplierAddress" type="text" placeholder="Supplier Address">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier Phonenumber</label>
+                            <input class="form-control" id="editSupplierPhonenumber" name="supplierPhonenumber" type="text" placeholder="Supplier Phonenumber">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier Email</label>
+                            <input class="form-control" id="editSupplierEmail" name="supplierEmail" type="email" placeholder="Supplier Email">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier Country</label>
+                            <input class="form-control" id="editSupplierCountry" name="supplierCountry" type="text" placeholder="Supplier Country">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier State</label>
+                            <input class="form-control" id="editSupplierState" name="supplierState" type="text" placeholder="Supplier State">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Supplier City</label>
+                            <input class="form-control" id="editSupplierCity" name="supplierCity" type="text" placeholder="Supplier City">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnEditSave" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

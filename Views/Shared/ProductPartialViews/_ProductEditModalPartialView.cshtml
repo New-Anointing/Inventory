@@ -1,0 +1,47 @@
+﻿
+
+    <!-- Modal -->
+    <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Create Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productFormData">
+                        <input hidden id="editId" name="editId" type="number"/>
+                        <div class="form-group mb-3">
+                            <label>Product Name</label>
+                            <input class="form-control" id="productName" name="name" type="text" placeholder="Product Name">
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Category Name</label>
+                            <select class="form-control" id="editCategoryName" name="categoryName" asp-items="@ViewBag.Category" ></select>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Code</label>
+                            <input class="form-control" id="productEditCode" name="productCode" type="text" placeholder="Product Code">
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Cost Price</label>
+                            <input class="form-control" id="productEditCostPrice" name="productCostPrice" type="text" placeholder="Product Price">
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Selling Price</label>
+                            <input class="form-control" id="productEditSellingPrice" name="productSellingPrice" type="text" placeholder="Product Price">
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Description</label>
+                            <input class="form-control" id="productEditDescription" name="productDescription" type="text" placeholder="Product Description">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnEditSave" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

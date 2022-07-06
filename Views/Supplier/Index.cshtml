@@ -1,0 +1,268 @@
+﻿@model Stock_keeping.Models.Supplier
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Supplier</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Supplier </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#supplierCreateModal">Add New Supplier</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Supplier Name
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier Code
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier Address
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier Phonenumber
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier Email Address
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier Country
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier State
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier City
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.Supplier)
+                                {
+                                    <tr>
+                                        <td>
+                    
+                                            @item.SupplierName
+                                        </td>
+                                        <td>
+                                            @item.SupplierCode
+                                        </td>
+                                        <td>
+                                            @item.SupplierAddress
+                                        </td>
+                                        <td>
+                                            @item.SupplierPhonenumber
+                                        </td>
+                                        <td>
+                                            @item.EmailAddress
+                                        </td>
+                                        <td>
+                                            @item.Country
+                                        </td>
+                                        <td>
+                                            @item.State
+                                        </td>
+                                        <td>
+                                            @item.City
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#supplierEditModal" title="Update Supplier" selectedName="@item.SupplierName" selectedCode="@item.SupplierCode" selectedId="@item.Id" selectedAddress="@item.SupplierAddress" selectedNumber="@item.SupplierPhonenumber" selectedEmail="@item.EmailAddress" selectedCountry="@item.Country" selectedState="@item.State" selectedCity="@item.City">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                @*    <a class="btn btn-success text-white mx-2" asp-action="Details" asp-route-Id="@Model">
+                                                    <i class="bi bi-card-list"></i>Details
+                                                    </a>*@
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <partial name="~/Views/Shared/SupplierPartialViews/_SupplierCreateModalPartialView.cshtml" />
+    <!-- Edit modal -->
+    <partial name="~/Views/Shared/SupplierPartialViews/_SupplierEditModalPartialView.cshtml" />
+    <!-- Delete modal -->
+    <partial name="~/Views/Shared/SupplierPartialViews/_SupplierDeleteModalPartialView.cshtml" />
+</div>
+
+@section Scripts{
+<script>
+
+     //CREATE SUPPLIER SCRIPTS
+     $(document).ready(function(){
+         $("#btnSave").click(function(event) {
+
+             event.preventDefault();
+             var supplier = {
+
+                 SupplierName: supplierFormData[0].name.value,
+                 SupplierCode: supplierFormData[0].supplierCode.value,
+                 SupplierAddress: supplierFormData[0].supplierAddress.value,
+                 SupplierPhonenumber: supplierFormData[0].supplierPhonenumber.value,
+                 EmailAddress: supplierFormData[0].supplierEmail.value,
+                 Country: supplierFormData[0].supplierCountry.value,
+                 State: supplierFormData[0].supplierState.value,
+                 City: supplierFormData[0].supplierCity.value
+
+             }
+             
+             $.ajax({
+                     type: "POST",
+                     url: "/Supplier/Create",
+                     //data: JSON.stringify(PostCustomer),
+                     data: supplier,
+                     dataType: "json",
+                     //contentType: 'application/json; charset=utf-8',
+                     traditional: true,
+                     success: function(r){
+
+                         if(r.msg == "success"){
+                              window.location.href="/Supplier/Index";
+                         }
+                     }
+             })
+         })
+     })
+
+
+     //EDIT SUPPLIER SCRIPTS
+    $(document).delegate("#btnEdit","click",function(e){
+
+         SupplierName = $(this).attr('selectedName');
+         SupplierCode = $(this).attr('selectedCode');
+         SupplierAddress = $(this).attr('selectedAddress');
+         SupplierPhonenumber = $(this).attr('selectedNumber');
+         EmailAddress = $(this).attr('selectedEmail');
+         countryVal = $(this).attr('selectedCountry');
+         stateVal = $(this).attr('selectedState');
+         cityVal = $(this).attr('selectedCity');
+         idVal = $(this).attr('selectedId');
+
+
+         var supplierName = $("#editName");
+         var Code = $("#editSupplierCode");
+         var Address = $('#editSupplierAddress');
+         var Phone = $('#editSupplierPhonenumber');
+         var Email = $('#editSupplierEmail');
+         var Country = $('#editSupplierCountry');
+         var State = $('#editSupplierState');
+         var City = $('#editSupplierCity');
+         var Id = $("#editId");
+
+
+         supplierName.val(SupplierName);
+         Code.val(SupplierCode);
+         Address.val(SupplierAddress);
+         Phone.val(SupplierPhonenumber);
+         Email.val(EmailAddress);
+         Country.val(countryVal);
+         State.val(stateVal);
+         City.val(cityVal);
+         Id.val(idVal);
+
+        $("#btnEditSave").click(function(event) {
+
+            console.log('click');
+            event.preventDefault();
+
+            var supplierData = {
+                SupplierName: $('#editName').val(),
+                SupplierCode: $('#editSupplierCode').val(),
+                SupplierAddress: $('#editSupplierAddress').val(),
+                SupplierPhonenumber: $('#editSupplierPhonenumber').val(),
+                EmailAddress: $('#editSupplierEmail').val(),
+                Country: $('#editSupplierCountry').val(),
+                State: $('#editSupplierState').val(),
+                City: $('#editSupplierCity').val(),
+                Id: parseInt($('#editId').val()),
+            }
+            console.log(supplierData.Id)
+            $.ajax({
+                    type: "POST",
+                    url: "/Supplier/Edit",
+                    //data: JSON.stringify(PostCustomer),
+                    data: supplierData,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                             window.location.href="/Supplier/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+    //DELETE SUPPLIER SCRIPTS
+    $(document).delegate("#btnDelete","click",function(e){
+        Id = $(this).attr('selectedId');
+        $("#btnDeleteSave").click(function(event) {
+            event.preventDefault();
+
+            var supplierDataId = {
+                Id: parseInt(Id),
+            }
+            $.ajax({
+                    type: "DELETE",
+                    url: "/Supplier/Delete",
+                    //data: JSON.stringify(PostCustomer),
+                    data: supplierDataId,
+                    dataType: "json",
+                    //contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                                window.location.href="/Supplier/Index";
+                        }
+                    }
+            })
+        })
+    })
+
+</script>
+}

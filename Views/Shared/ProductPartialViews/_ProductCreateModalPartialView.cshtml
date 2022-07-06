@@ -1,0 +1,56 @@
+﻿@model Product
+
+    <!-- Modal -->
+    <div class="modal fade" id="productCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Create Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productFormData">
+                        <div class="form-group mb-3">
+                            <label>Product Name</label>
+                            <input class="form-control" id="name" name="name" type="text" placeholder="Product Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Category Name</label>
+                            <select class="form-control" id="categoryName" name="categoryName" asp-items="@ViewBag.Category" ></select>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Code</label>
+                            <input class="form-control" id="productCode" name="productCode" type="text" placeholder="Product Code">
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Cost Price</label>
+                            <input class="form-control" id="productCostPrice" name="productCostPrice" type="text" placeholder="Product Price">
+                            <span asp-validation-for="CostPrice" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Selling Price</label>
+                            <input class="form-control" id="productSellingPrice" name="productSellingPrice" type="text" placeholder="Product Price">
+                            <span asp-validation-for="SellingPrice" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label>Product Description</label>
+                            <input class="form-control" id="productDescription" name="productDescription" type="text" placeholder="Product Description">
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSave" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    }

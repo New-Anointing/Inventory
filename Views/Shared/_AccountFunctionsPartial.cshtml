@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="dropdown">
+        <a class="nav-link dropdown-toggle nav-user" id="utilityDropdown" data-bs-toggle="dropdown" href="#" role="button"
+       aria-haspopup="true" aria-expanded="false">
+            <div class="d-flex align-items-center">
+                <img src="~/images/users/user-4.jpg" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                <div>
+                    <small class="d-none d-md-block font-11">@User.Identity?.Name</small>
+                    <span class="d-none d-md-block fw-semibold font-12">
+                        @User.Identity?.Name <i class="bi bi-arrow-down"></i>
+                    </span>
+                </div>
+            </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="utilityDropdown">
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
+            <div class="dropdown-divider mb-0"></div>
+            <span class="dropdown-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark" style="margin-left:0 !important;"><i class="ti ti-power font-16 me-1 align-text-bottom"></i>Logout</button>
+                </form>
+            </span>
+        </div>
+    </li>
+
+    <!--end topbar-profile-->
+}

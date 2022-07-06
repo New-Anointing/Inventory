@@ -1,0 +1,242 @@
+﻿@model Stock_keeping.Models.Product
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Product</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Product </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#productCreateModal">Add New Product</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Product Name
+                                    </th>
+                                    <th style="color:white;">
+                                        Product Category
+                                    </th>
+                                    <th style="color:white;">
+                                        Product Code
+                                    </th>
+                                    <th style="color:white;">
+                                        Product Cost Price
+                                    </th>
+                                    <th style="color:white;">
+                                        Product Selling Price
+                                    </th>
+                                    <th style="color:white;">
+                                        Product Description
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.Products)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.Category.Name
+                                        </td>
+                                        <td>
+                                            @item.Code
+                                        </td>                                        
+                                        <td>
+                                            @item.CostPrice
+                                        </td>                                        
+                                        <td>
+                                            @item.SellingPrice
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#productEditModal" title="Update product category" selectedName="@item.Name" selectedCategory="@item.Category.Id" selectedCode="@item.Code" selectedCostP="@item.CostPrice" selectedSellP="@item.SellingPrice" selectedDescript="@item.Description" selectedId="@item.Id">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete product category" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <partial name="~/Views/Shared/ProductPartialViews/_ProductCreateModalPartialView.cshtml" />
+    <!-- Edit modal -->
+    <partial name="~/Views/Shared/ProductPartialViews/_ProductEditModalPartialView.cshtml" />
+    <!-- Delete modal -->
+    <partial name="~/Views/Shared/ProductPartialViews/_ProductDeleteModalPartialView.cshtml" />
+</div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function (){
+            saveProduct();
+        })
+
+        //FUNCTION TO SAVE PRODUT TO DB
+        function saveProduct(){
+            $("#btnSave").click(function(event){
+                var select = $('#categoryName :selected')
+                console.log(select[0]);
+                console.log($(select[0]).attr('value'));
+                event.preventDefault();
+                var product = {
+                    Name : $('#name').val(),
+                    Code : $('#productCode').val(),
+                    CategoryId: parseInt($(select[0]).attr('value')),
+                    CostPrice : parseInt($('#productCostPrice').val()),
+                    SellingPrice : parseInt($('#productSellingPrice').val()),
+                    Description : $('#productDescription').val(),
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Product/Create",
+                    data: product,
+                    dataType: "json",
+                    traditional:true,
+                    success: function(res){
+                        if(res.msg == "success"){
+                            window.location.href="/Product/Index";
+                        }
+                    }
+                })
+            })
+        }
+
+        //FUNCTION TO GET PRODUCT INFO TO BE EDITED
+        $(document).delegate('#btnEdit', 'click', function(event){
+                event.preventDefault();
+                Name = $(this).attr('selectedName');
+                Category = $(this).attr('selectedCategory');
+                Code = $(this).attr('selectedCode');
+                CostPrice = $(this).attr('selectedCostP');
+                SellingPrice = $(this).attr('selectedSellP');
+                Description = $(this).attr('selectedDescript');
+                Id = $(this).attr('selectedId');
+
+                var productName = $("#productName");
+                var categoryName = $("#editCategoryName");
+                var productCode = $("#productEditCode");
+                var productCostP = $("#productEditCostPrice");
+                var productSellP = $("#productEditSellingPrice");
+                var productDescript = $("#productEditDescription");
+                var productId = $("#editId");
+
+                const keys = Object.keys(categoryName);
+                               
+
+                productName.val(Name);
+                categoryName[keys[0]].value = Category;
+                productCode.val(Code);
+                productCostP.val(CostPrice);
+                productSellP.val(SellingPrice);
+                productDescript.val(Description);
+                productId.val(Id);
+
+            $("#btnEditSave").click(function(event){
+                var select = $('#editCategoryName')
+                const keys = Object.keys(categoryName);
+                event.preventDefault();
+                var product = {
+                    Name : $('#productName').val(),
+                    Code : $('#productEditCode').val(),
+                    CategoryId: select[keys[0]].value,
+                    CostPrice : parseInt($('#productEditCostPrice').val()),
+                    SellingPrice : parseInt($('#productEditSellingPrice').val()),
+                    Description : $('#productEditDescription').val(),
+                    Id: parseInt($('#editId').val()),
+                }
+                console.log(product)
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Product/Edit",
+                    data: product,
+                    dataType: "json",
+                    traditional:true,
+                    success: function(res){
+                        if(res.msg == "success"){
+                            window.location.href="/Product/Index";
+                        }
+                    }
+                })
+            })
+
+        })
+
+        //DELETE CATEGORY SCRIPTS
+        $(document).delegate("#btnDelete","click",function(e){
+            Id = $(this).attr('selectedId');
+            $("#btnDeleteSave").click(function(event) {
+
+                console.log('click');
+                event.preventDefault();
+
+                var productDataId = {
+                    Id: parseInt(Id),
+                }
+                console.log(productDataId);
+                $.ajax({
+                        type: "POST",
+                        url: "/Product/Delete",
+                        //data: JSON.stringify(PostCustomer),
+                        data: productDataId,
+                        dataType: "json",
+                        //contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        success: function(r){
+
+                            if(r.msg == "success"){
+                                    window.location.href="/Product/Index";
+                            }
+                        }
+                })
+            })
+        })
+
+    </script>
+}

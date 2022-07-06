@@ -1,0 +1,101 @@
+﻿@page
+@model UserRegisterModel
+@using Stock_keeping.Utility
+@{
+    Layout = "";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <title>SignUp - Inventory</title>
+</head>
+<body>
+
+
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2"></div>
+        <div class="contents order-2 order-md-1">
+
+            <div class="container">
+                <div class="row form-row align-items-center justify-content-center">
+                    <div class="col-md-7">
+
+                        <h1>Register a new user</h1>
+                        <p class="mb-4">Add a new user to your company.</p>
+
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mb-4">
+                            <h2>Create a new user account.</h2>
+                            <hr />
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.FirstName">FirstName</label>
+                                <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="eg: John">
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.LastName">LastName</label>
+                                <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="eg: Doe">
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.Email">Email</label>
+                                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="your-email@gmail.com">
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.PhoneNumber">PhoneNumber</label>
+                                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="eg: 08011223344">
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 ">
+                                <label>Branch Name</label>
+                                <select class="form-control" asp-for="Input.BranchId"  asp-items="@ViewBag.Branch" ></select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.Password">Password</label>
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Your Password">
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.ConfirmPassword">Comfirm Password</label>
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Your Password">
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <input type="radio" name="rdUserRole" value="@SD.ManagerUser" checked /> @SD.ManagerUser
+                                <input type="radio" name="rdUserRole" value="@SD.SalesOfficerUser" checked /> @SD.SalesOfficerUser
+                            </div>
+
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-block btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+</body>
+</html>
+
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,210 @@
+﻿@model Stock_keeping.Models.Category
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Category</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Category </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#categoryCreateModal">Add New Category</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Category Name
+                                    </th>
+                                    <th style="color:white;">
+                                        Category Code
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.Category)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.CategoryCode
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#editModal" title="Update product category" selectedName="@item.Name" selectedCode="@item.CategoryCode" selectedId="@item.Id">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                @*    <a class="btn btn-success text-white mx-2" asp-action="Details" asp-route-Id="@Model">
+                                                    <i class="bi bi-card-list"></i>Details
+                                                    </a>*@
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete product category" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <partial name="~/Views/Shared/CategoryPartialViews/_CategoryCreateModalPartialView.cshtml" />
+    <!-- Edit modal -->
+    <partial name="~/Views/Shared/CategoryPartialViews/_CategoryEditModalPartialView.cshtml" />
+    <!-- Delete modal -->
+    <partial name="~/Views/Shared/CategoryPartialViews/_CategoryDeleteModalPartialView.cshtml" />
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+    <script>
+
+         //CREATE CATEGORY SCRIPTS
+         $(document).ready(function(){
+             $("#btnSave").click(function(event) {
+
+                 event.preventDefault();
+                 var category = {
+
+                     Name: categoryFromData.name.value,
+                     CategoryCode: categoryFromData.categoryCode.value
+
+                 }
+                 
+                 $.ajax({
+                         type: "POST",
+                         url: "/Category/Create",
+                         //data: JSON.stringify(PostCustomer),
+                         data: category,
+                         dataType: "json",
+                         //contentType: 'application/json; charset=utf-8',
+                         traditional: true,
+                         success: function(r){
+
+                             if(r.msg == "success"){
+                                  window.location.href="/Category/Index";
+                             }
+                         }
+                 })
+             })
+         })
+
+
+         //EDIT CATEGORY SCRIPTS
+        $(document).delegate("#btnEdit","click",function(e){
+
+             Name = $(this).attr('selectedName');
+             CategoryCode = $(this).attr('selectedCode');
+             Id = $(this).attr('selectedId');
+
+             console.log(Name, CategoryCode, Id);
+
+             var categoryName = $("#editName");
+             var categoryCode = $("#editCategoryCode");
+             var categoryId = $("#editId");
+
+
+             categoryName.val(Name);
+             categoryCode.val(CategoryCode);
+             categoryId.val(Id);
+
+            $("#btnEditSave").click(function(event) {
+
+                console.log('click');
+                event.preventDefault();
+                var categoryData = {
+
+                    Name: $('#editName').val(),
+                    CategoryCode: $('#editCategoryCode').val(),
+                    Id: parseInt($('#editId').val()),
+
+
+                }
+                console.log(categoryData);
+                $.ajax({
+                        type: "POST",
+                        url: "/Category/Edit",
+                        //data: JSON.stringify(PostCustomer),
+                        data: categoryData,
+                        dataType: "json",
+                        //contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        success: function(r){
+
+                            if(r.msg == "success"){
+                                 window.location.href="/Category/Index";
+                            }
+                        }
+                })
+            })
+        })
+
+        //DELETE CATEGORY SCRIPTS
+        $(document).delegate("#btnDelete","click",function(e){
+            Id = $(this).attr('selectedId');
+            $("#btnDeleteSave").click(function(event) {
+
+                console.log('click');
+                event.preventDefault();
+
+                var categoryDataId = {
+                    Id: parseInt(Id),
+                }
+                console.log(categoryDataId);
+                $.ajax({
+                        type: "POST",
+                        url: "/Category/Delete",
+                        //data: JSON.stringify(PostCustomer),
+                        data: categoryDataId,
+                        dataType: "json",
+                        //contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        success: function(r){
+
+                            if(r.msg == "success"){
+                                    window.location.href="/Category/Index";
+                            }
+                        }
+                })
+            })
+        })
+
+    </script>
+}
