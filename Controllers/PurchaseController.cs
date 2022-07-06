@@ -97,5 +97,20 @@ namespace Stock_keeping.Controllers
                 msg = "success"
             });
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var purchasedItemtToDel = await _db.PurchaseList.FirstOrDefaultAsync(p => p.Id == id);
+            _db.PurchaseList.Remove(purchasedItemtToDel);
+
+            await _db.SaveChangesAsync();
+
+            return Json(new
+            {
+                msg = "success"
+            });
+
+        }
     }
 }
