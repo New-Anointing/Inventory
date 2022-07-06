@@ -161,8 +161,8 @@
     </div> <!-- end row -->
     <!--creat form modal-->
     <!-- Modals -->
+
     <!-- Create modal -->
-   
     <!-- Modal -->
     <div class="modal fade" id="purchaseCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -297,9 +297,27 @@
             </div>
         </div>
     </div>
- @*    <partial name="~/Views/Shared/SupplierPartialViews/_SupplierEditModalPartialView.cshtml" />
     <!-- Delete modal -->
-    <partial name="~/Views/Shared/SupplierPartialViews/_SupplierDeleteModalPartialView.cshtml" />*@
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Purchased Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span style="color:red;"><i class="bi bi-exclamation-circle"></i> Warning</span>
+                    <h5>Are you sure you want to delete this item?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnDeleteSave" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{
@@ -410,20 +428,20 @@
     })
 
 
-    ////EDIT TOTAL WHEN DISCOUNT CHANGES
+    ////EDIT TOTAL WHEN DISCOUNT AND TAX CHANGES
     $("#discount, #tax").change(function(){
         var discount = $('#discount').val();
         var amount = parseFloat($("#amount").val());
         var tax = $("#tax").val();
         caldisc = (amount*discount)/100;
         var calcPWithDisc = (amount - caldisc);
-        $("#priceWithDisc").val(calcPWithDisc);
-        $("#total").val(calcPWithDisc);
+        $("#priceWithDisc").val(calcPWithDisc.toFixed(2));
+        $("#total").val(calcPWithDisc.toFixed(2));
         var pWithDisc = parseFloat($("#priceWithDisc").val());
         caltax = (pWithDisc*tax)/100;
-        $("#taxPrice").val(caltax);
-        $("#discountPrice").val(caldisc);
-        var totalPrice = parseFloat( pWithDisc + parseFloat(caltax))
+        $("#taxPrice").val(caltax.toFixed(2));
+        $("#discountPrice").val(caldisc.toFixed(2));
+        var totalPrice = parseFloat(pWithDisc + parseFloat(caltax)).toFixed(2);
         $("#total").val(totalPrice);
     })
 
@@ -435,7 +453,7 @@
             url: "/Purchase/SolveTotalAmount",
             success: function(res){
                         $("#amountId").text(res.amount);
-                        $("#discId").text(res.discount);
+                        $("#discId").text(res.discount.toFixed(2));
                         $("#dicCostId").text(res.dicsCost);
                         $("#taxId").text(res.tax);
                         $("#totalCostId").text(res.total)
@@ -512,14 +530,14 @@
         var tax = $("#editTax").val();
         caldisc = (amount*discount)/100;
         var calcPWithDisc = (amount - caldisc);
-        $("#editPriceWithDisc").val(calcPWithDisc);
-        $("#editTotal").val(calcPWithDisc);
-        $("#editDiscountPrice").val(caldisc);
+        $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
+        $("#editTotal").val(calcPWithDisc.toFixed(2));
+        $("#editDiscountPrice").val(caldisc.toFixed(2));
         var pWithDisc = parseFloat($("#editPriceWithDisc").val());
         caltax = (pWithDisc*tax)/100;
-        $("#editTaxPrice").val(caltax);
+        $("#editTaxPrice").val(caltax.toFixed(2));
         var totalPrice = ( pWithDisc + parseFloat(caltax))
-        $("#editTotal").val(totalPrice);
+        $("#editTotal").val(totalPrice.toFixed(2));
     })
 
 </script>
@@ -531,11 +549,12 @@
 @*///////////////////////////////////////////////////////////*@
 
 
-@*SCRIPT FOR SAVING EDITED ITEM*@
+
+@*SCRIPT FOR ALL CRUD FUNCTIONS*@
     
 <script>
 
-     //ADDING PURCHASE TO LIST SCRIPTS
+     //ADDING CREATED STOCK TO LIST SCRIPTS
      $(document).ready(function(){
          $("#btnSave").click(function(event) {
              var selectedVal = $("#productName").val();
@@ -587,8 +606,12 @@
          })
      })
 
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
 
-     //EDIT SUPPLIER SCRIPTS
+     //SCRIPT FOR SAVING EDITED ITEM
+     //EDIT STOCK ITEM SCRIPTS
     $(document).delegate("#btnEdit","click",function(e){
 
          Category = $(this).attr('selectedCategory');
@@ -670,36 +693,34 @@
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
 
-    //DELETE SUPPLIER SCRIPTS
-    //$(document).delegate("#btnDelete","click",function(e){
-    //    Id = $(this).attr('selectedId');
-    //    $("#btnDeleteSave").click(function(event) {
-    //        event.preventDefault();
 
-    //        var supplierDataId = {
-    //            Id: parseInt(Id),
-    //        }
-    //        $.ajax({
-    //                type: "DELETE",
-    //                url: "/Supplier/Delete",
-    //                data: JSON.stringify(PostCustomer),
-    //                data: supplierDataId,
-    //                dataType: "json",
-    //                contentType: 'application/json; charset=utf-8',
-    //                traditional: true,
-    //                success: function(r){
+    //DELETE STOCK ITEM SCRIPTS
+    $(document).delegate("#btnDelete","click",function(e){
+        Id = $(this).attr('selectedId');
+        console.log(Id)
+        $("#btnDeleteSave").click(function(event) {
+            event.preventDefault();
 
-    //                    if(r.msg == "success"){
-    //                            window.location.href="/Supplier/Index";
-    //                    }
-    //                }
-    //        })
-    //    })
-    //})
+            var purchaseDataId = {
+                Id: parseInt(Id),
+            }
+            console.log(purchaseDataId)
+            $.ajax({
+                    type: "DELETE",
+                    url: "/Purchase/Delete",
+                    data: purchaseDataId,
+                    dataType: "json",
+                    traditional: true,
+                    success: function(r){
+
+                        if(r.msg == "success"){
+                                window.location.href="/Purchase/Index";
+                        }
+                    }
+            })
+        })
+    })
 
 </script>
 }
