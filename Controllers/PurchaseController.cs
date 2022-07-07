@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Stock_keeping.Data;
 using Stock_keeping.Models;
+using Stock_keeping.Utility;
 using System.Security.Claims;
 
 namespace Stock_keeping.Controllers
@@ -111,6 +112,46 @@ namespace Stock_keeping.Controllers
                 msg = "success"
             });
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatingReportAndSummary(ReportObj reportObj)
+        {
+            var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
+            foreach(var stockItem in stock)
+            {
+                var PurReport = new PurchaseReport()
+                {
+                    PurchaseTime = DateTime.Parse(reportObj.PurchaseDate),
+                    SupplierId = reportObj.SupplierId,
+                    ProductId = stockItem.ProductId,
+                    Quantity = stockItem.Quantity,
+                    TotalCost = stockItem.Price,
+                    OrgId = stockItem.OrgId
+                };
+
+                _db.PurchaseReport.Add(PurReport);
+                await _db.SaveChangesAsync();
+            }
+
+
+            var PurSummary = new PurchaseSummary()
+            {
+                Date = DateTime.Parse(reportObj.PurchaseDate),
+                SupplierId = reportObj.SupplierId,
+                TotalCost = reportObj.TotalCost,
+                OrgId = GetOrg()
+            };
+
+            _db.PurchaseSummary.Add(PurSummary);
+            await _db.SaveChangesAsync();
+
+            _db.PurchaseList.RemoveRange(stock);
+            await _db.SaveChangesAsync();
+            return Json(new
+            {
+                msg = "success"
+            });
         }
     }
 }
