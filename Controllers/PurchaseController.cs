@@ -153,5 +153,19 @@ namespace Stock_keeping.Controllers
                 msg = "success"
             });
         }
+
+        public async Task<IActionResult> PurchaseReport()
+        {
+            var purchaseReport = await _db.PurchaseReport.Include(p=>p.Supplier).Include(p=>p.Product).Where(p=>p.OrgId == GetOrg()).ToListAsync();
+            ViewBag.purchaseReport = purchaseReport;
+            return View();
+        }
+
+        public async Task<IActionResult> PurchaseSummary()
+        {
+            var purchaseSummary = await _db.PurchaseSummary.Include(p => p.Supplier).Where(p => p.OrgId == GetOrg()).ToListAsync();
+            ViewBag.purchaseSummary = purchaseSummary;
+            return View();
+        }
     }
 }

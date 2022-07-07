@@ -74,6 +74,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="Purchase" asp-action="Index" >Purchase</a>
                                     </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Purchase" asp-action="PurchaseReport" >PurchaseReport</a>
+                                    </li><!--end nav-item-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Purchase" asp-action="PurchaseSummary" >PurchaseSummary</a>
+                                    </li><!--end nav-item-->
                                     @if(User.IsInRole(SD.ManagerUser)){
                                         <li class="nav-item">
                                             <a class="nav-link" asp-controller="Users" asp-action="Index" >Users</a>

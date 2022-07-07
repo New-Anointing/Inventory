@@ -1,0 +1,120 @@
+﻿@model Stock_keeping.Models.PurchaseReport
+
+@{
+    ViewData["Title"] = "PurchaseReport";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Purchase</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Purchase </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="date-div mb-4 w-50">
+                            <span>Select Date</span>
+                            <input class="form-control" id="datePicker"/>
+                        </div>
+
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#purchaseCreateModal">Purchase Report</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Date
+                                    </th>
+                                    <th style="color:white;">
+                                        Supplier
+                                    </th>
+                                    <th style="color:white;">
+                                        Product
+                                    </th>
+                                    <th style="color:white;">
+                                        Quntity
+                                    </th>
+                                    <th style="color:white;">
+                                        Cost(&#8358)
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.PurchaseReport)
+                                {
+                                    <tr>
+                                        <td>
+                    
+                                            @item.PurchaseTime
+                                        </td>
+                                        <td>
+                                            @item.Supplier.SupplierName
+                                        </td>
+                                        <td>
+                                            @item.Product.Name
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.TotalCost
+                                        </td>
+
+                                    </tr>
+                                }
+                                @*<tr style="">
+                                    <td style="color:white; background:#2ea80c;" colspan="4">
+                                        Sum-Total(&#8358):
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="amountId">
+                                        
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="discId">
+                                        
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="dicCostId">
+                                        
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="taxId">
+                                        
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="totalCostId">
+                                        
+                                    </td>
+                                    <td style="width:150px;">
+                                        <div class="btn-group w-75">
+                                             <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
+                                                  <i class="bi bi-save"></i> Save
+                                             </button>
+
+                                        </div>
+                                    </td>
+                                </tr>*@
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+</div>
+
