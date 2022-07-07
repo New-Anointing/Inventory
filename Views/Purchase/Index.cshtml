@@ -145,7 +145,7 @@
                                     </td>
                                     <td style="width:150px;">
                                         <div class="btn-group w-75">
-                                             <button class="btn btn-small text-white mx-2" style="background:#2ea80c;">
+                                             <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
                                                   <i class="bi bi-save"></i> Save
                                              </button>
 
@@ -723,4 +723,32 @@
     })
 
 </script>
+
+@*FINAL SAVE BUTTON SCRIPT TO SAVE TO THE OTHER PAGES*@
+
+<script>
+    $("#btnSubmitSave").click(function(){
+        
+        var reportData = {
+            PurchaseDate : $('#datePicker').val(),
+            SupplierId : $('#supplierInput').val(),
+            TotalCost : $('#totalCostId').text()
+        }
+
+        $.ajax({
+            type: "POST",
+            url : "/Purchase/CreatingReportAndSummary",
+            data : reportData,
+            dataType : "json",
+            traditional : true,
+            success: function(r){
+
+                if(r.msg == "success"){
+                        window.location.href="/Purchase/Index";
+                }
+            }
+        })
+    })
+</script>
+
 }
