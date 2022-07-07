@@ -17,7 +17,7 @@
                         <li class="breadcrumb-item active">Editable</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Supplier</h4>
+                <h4 class="page-title">Purchase</h4>
             </div>
             <!--end page-title-box-->
         </div>
@@ -28,7 +28,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Supplier </h4>
+                    <h4 class="card-title">Purchase </h4>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -452,11 +452,11 @@
             dataType:"JSON",
             url: "/Purchase/SolveTotalAmount",
             success: function(res){
-                        $("#amountId").text(res.amount);
+                        $("#amountId").text(res.amount.toFixed(2));
                         $("#discId").text(res.discount.toFixed(2));
-                        $("#dicCostId").text(res.dicsCost);
-                        $("#taxId").text(res.tax);
-                        $("#totalCostId").text(res.total)
+                        $("#dicCostId").text(res.dicsCost.toFixed(2));
+                        $("#taxId").text(res.tax.toFixed(2));
+                        $("#totalCostId").text(res.total.toFixed(2))
                      }
                 
         })
