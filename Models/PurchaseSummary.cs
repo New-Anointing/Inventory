@@ -9,7 +9,7 @@ namespace Stock_keeping.Models
         public int Id { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime PurchasedDate { get; set; }
 
         [Required]
         public int SupplierId { get; set; }
@@ -21,5 +21,6 @@ namespace Stock_keeping.Models
         public double TotalCost { get; set; }
 
         public string OrgId { get; set; }
+
     }
 }

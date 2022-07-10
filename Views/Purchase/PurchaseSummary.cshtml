@@ -31,13 +31,16 @@
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <div class="date-div mb-4 w-50">
-                            <span>Select Date</span>
-                            <input class="form-control" id="datePicker"/>
+                        <div class="date-div mb-4 w-25">
+                            <span>Select Start Date</span>
+                            <input class="form-control" type="date" id="startDate"/>
                         </div>
-
-                        <div class="mb-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#purchaseCreateModal">Purchase Report</button>
+                        <div class="date-div mb-4 w-25">
+                            <span>Select End Date</span>
+                            <input class="form-control" type="date" id="endDate"/>
+                        </div>
+                        <div>
+                            <button id="btn">btn</button>
                         </div>
                         <div class="table-div">
                             <table class="table table-bordered">
@@ -57,8 +60,7 @@
                                 {
                                     <tr>
                                         <td>
-                    
-                                            @item.Date
+                                            @item.PurchasedDate.ToString("MM/dd/yyyy")
                                         </td>
                                         <td>
                                             @item.Supplier.SupplierName
@@ -107,4 +109,20 @@
     <!--creat form modal-->
 </div>
 
+@section Scripts{
+    <script>
+        $("#btn").click(function(e){
+            e.preventDefault();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            if(startDate > endDate){
+                console.log("yes");
+            }else{
+                console.log("no");
+            }
+        })
+
+    </script>
+}
 
