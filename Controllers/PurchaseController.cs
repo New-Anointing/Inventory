@@ -134,10 +134,11 @@ namespace Stock_keeping.Controllers
                 await _db.SaveChangesAsync();
             }
 
+            DateTime date = DateTime.Parse(reportObj.PurchaseDate);
 
             var PurSummary = new PurchaseSummary()
             {
-                Date = DateTime.Parse(reportObj.PurchaseDate),
+                PurchasedDate = date,
                 SupplierId = reportObj.SupplierId,
                 TotalCost = reportObj.TotalCost,
                 OrgId = GetOrg()

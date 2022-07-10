@@ -40,7 +40,7 @@
 
                         <div class="date-div mb-4 w-50">
                             <span>Select Date</span>
-                            <input class="form-control" id="datePicker"/>
+                            <input class="form-control" type="date" id="datePicker"/>
                         </div>
 
                         <div class="mb-2">
@@ -735,19 +735,35 @@
             TotalCost : $('#totalCostId').text()
         }
 
-        $.ajax({
-            type: "POST",
-            url : "/Purchase/CreatingReportAndSummary",
-            data : reportData,
-            dataType : "json",
-            traditional : true,
-            success: function(r){
+        if(reportData.TotalCost == 0.00 ){
+            alert("add a product to list")
+        }else if(reportData.SupplierId == null){
+            alert("add a supplier")
+        }else if(reportData.PurchaseDate == ''){
+            alert("add a date")
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "/Purchase/CreatingReportAndSummary",
+                data: reportData,
+                dataType: "json",
+                traditional: true,
+                success: function(r) {
 
-                if(r.msg == "success"){
-                        window.location.href="/Purchase/Index";
+                    if (r.msg == "success") {
+                        window.location.href = "/Purchase/PurchaseSummary";
+                    }
                 }
+            });
+
+            if($("#supplierInput").length){
+                $("#supplierInput").val(localStorage.removeItem("supplierInput"));
             }
-        })
+            if($("#datePicker").length){
+                $("#datePicker").val(localStorage.removeItem("datePicker"));
+            }
+        }
+
     })
 </script>
 

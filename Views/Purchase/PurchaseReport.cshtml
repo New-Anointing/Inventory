@@ -33,11 +33,11 @@
                     <div class="table-responsive">
                         <div class="date-div mb-4 w-50">
                             <span>Select Date</span>
-                            <input class="form-control" id="datePicker"/>
+                            <input class="form-control" type="date" id="datePicker"/>
                         </div>
 
                         <div class="mb-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#purchaseCreateModal">Purchase Report</button>
+                            <a  class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="index" >Add New Stock</a>
                         </div>
                         <div class="table-div">
                             <table class="table table-bordered">
@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>
                     
-                                            @item.PurchaseTime
+                                            @item.PurchaseTime.ToString("MM/dd/yyyy")
                                         </td>
                                         <td>
                                             @item.Supplier.SupplierName
