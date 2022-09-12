@@ -51,33 +51,33 @@
                             <div class="" id="sidebarTables">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index" >DashBoard</a>
+                                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index" >DASHBOARD</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Home" asp-action="Privacy" >Privacy</a>
+                                        <a class="nav-link" asp-controller="Home" asp-action="Privacy" >PRIVACY</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Category" asp-action="Index" >Category</a>
+                                        <a class="nav-link" asp-controller="Category" asp-action="Index" >CATEGORY</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Product" asp-action="Index" >Products</a>
+                                        <a class="nav-link" asp-controller="Product" asp-action="Index" >PRODUCTS</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Branch" asp-action="Index" >Branch</a>
+                                        <a class="nav-link" asp-controller="Branch" asp-action="Index" >BRANCH</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Supplier" asp-action="Index" >Supplier</a>
+                                        <a class="nav-link" asp-controller="Supplier" asp-action="Index" >SUPPLIERS</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Customer" asp-action="Index" >Customer</a>
+                                        <a class="nav-link" asp-controller="Customer" asp-action="Index" >CUSTOMERS</a>
                                     </li><!--end nav-item-->
                                     
                                     <li class="nav-item">
-                                    <a class="nav-link" href="#sidebarCrypto" data-bs-toggle="collapse" role="button"
+                                    <a class="nav-link" href="#purcheses" data-bs-toggle="collapse" role="button"
                                         aria-expanded="false">
-                                        Purchases
+                                        PURCHASES
                                     </a>
-                                    <div class="collapse " id="sidebarCrypto">
+                                    <div class="collapse " id="purcheses">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
                                                 <a class="nav-link" asp-controller="Purchase" asp-action="PurchaseReport" >PurchaseReport</a>
@@ -88,12 +88,28 @@
                                         </ul><!--end nav-->
                                     </div><!--end sidebarCrypto-->
                                 </li><!--end nav-item-->
-                                    @if(User.IsInRole(SD.ManagerUser)){
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-controller="Users" asp-action="Index" >Users</a>
-                                        </li>
-                                        @*<!--end nav-item-->*@
-                                    }
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="#sales" data-bs-toggle="collapse" role="button"
+                                        aria-expanded="false">
+                                        SALES
+                                    </a>
+                                    <div class="collapse " id="sales">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-controller="Sales" asp-action="AddSoldItems" >SalesReport</a>
+                                            </li><!--end nav-item-->
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-controller="Sales" asp-action="SalesSummary" >SalesSummary</a>
+                                            </li><!--end nav-item-->
+                                        </ul><!--end nav-->
+                                    </div><!--end sidebarCrypto-->
+                                </li><!--end nav-item-->
+                                @if(User.IsInRole(SD.ManagerUser)){
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Users" asp-action="Index" >USERS</a>
+                                    </li>
+                                    @*<!--end nav-item-->*@
+                                }
                                 </ul><!--end nav-->
                             </div><!--end sidebarTables-->
                         </li><!--end nav-item-->

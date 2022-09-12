@@ -22,5 +22,6 @@ namespace Stock_keeping.Data
         public DbSet<PurchaseList> PurchaseList { get; set; }
         public DbSet<PurchaseReport> PurchaseReport { get; set; }
         public DbSet<PurchaseSummary> PurchaseSummary { get; set; }
+        public DbSet<SalesList> SalesList { get; set; }
     }
 }

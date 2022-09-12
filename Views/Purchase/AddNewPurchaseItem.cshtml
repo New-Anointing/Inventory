@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "AddNewPurchaseItem";
 }
 
 <div class="container-fluid">
@@ -40,7 +40,7 @@
 
                         <div class="date-div mb-4 w-50">
                             <span>Select Date</span>
-                            <input class="form-control" type="date" id="datePicker"/>
+                            <input class="form-control" type="date" id="datePicker" />
                         </div>
 
                         <div class="mb-2">
@@ -84,7 +84,7 @@
                                 {
                                     <tr>
                                         <td>
-                    
+
                                             @item.Category.Name
                                         </td>
                                         <td>
@@ -113,7 +113,7 @@
                                         </td>
                                         <td style="width:150px">
                                             <div class="btn-group w-75" role="group">
-                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#stockEditModal" title="Update Stock" selectedCategory="@item.Category.Name" selectedProduct="@item.Product.Id" selectedId="@item.Id" selectedQuantity="@item.Quantity" selectedUnitP="@item.Product.CostPrice" selectedAmount="@item.Amount" selectedDiscount="@item.DiscountPrice" selectedDiscountedC ="@item.DiscountedCost" selectedTax="@item.TaxPrice" selectedPrice="@item.Price">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#stockEditModal" title="Update Stock" selectedCategory="@item.Category.Name" selectedProduct="@item.Product.Id" selectedId="@item.Id" selectedQuantity="@item.Quantity" selectedUnitP="@item.Product.CostPrice" selectedAmount="@item.Amount" selectedDiscount="@item.DiscountPrice" selectedDiscountedC="@item.DiscountedCost" selectedTax="@item.TaxPrice" selectedPrice="@item.Price">
                                                     <i class="bi bi-pencil-square"></i>Edit
                                                 </button>
                                                 <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
@@ -129,25 +129,20 @@
                                         Sum-Total(&#8358):
                                     </td>
                                     <td style="color:white; background:#2ea80c;" id="amountId">
-                                        
                                     </td>
                                     <td style="color:white; background:#2ea80c;" id="discId">
-                                        
                                     </td>
                                     <td style="color:white; background:#2ea80c;" id="dicCostId">
-                                        
                                     </td>
                                     <td style="color:white; background:#2ea80c;" id="taxId">
-                                        
                                     </td>
                                     <td style="color:white; background:#2ea80c;" id="totalCostId">
-                                        
                                     </td>
                                     <td style="width:150px;">
                                         <div class="btn-group w-75">
-                                             <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
-                                                  <i class="bi bi-save"></i> Save
-                                             </button>
+                                            <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
+                                                <i class="bi bi-save"></i> Save
+                                            </button>
 
                                         </div>
                                     </td>
@@ -161,7 +156,6 @@
     </div> <!-- end row -->
     <!--creat form modal-->
     <!-- Modals -->
-
     <!-- Create modal -->
     <!-- Modal -->
     <div class="modal fade" id="purchaseCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -176,7 +170,7 @@
                     <form id="stockFormData">
                         <div class="form-group mb-3">
                             <label>Category Name</label>
-                            <input disabled class="form-control" id="categoryName" type="text" placeholder="Category Name"/>
+                            <input disabled class="form-control" id="categoryName" type="text" placeholder="Category Name" />
                         </div>
                         <div class="form-group mb-3">
                             <label>Product Name</label>
@@ -186,7 +180,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Quantity</label>
-                            <input class="form-control" type="number" min="1" id="quantity"/>
+                            <input class="form-control" type="number" min="1" id="quantity" />
                         </div>
                         <div class="form-group mb-3">
                             <label>Unit Cost(&#8358)</label>
@@ -244,7 +238,7 @@
                     <form id="stockEditFormData">
                         <div class="form-group mb-3">
                             <label>Category Name</label>
-                            <input disabled class="form-control" id="editCategoryName" type="text" placeholder="Category Name"/>
+                            <input disabled class="form-control" id="editCategoryName" type="text" placeholder="Category Name" />
                         </div>
                         <div class="form-group mb-3">
                             <label>Product Name</label>
@@ -254,7 +248,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Quantity</label>
-                            <input class="form-control" type="number" min="1" id="editQuantity"/>
+                            <input class="form-control" type="number" min="1" id="editQuantity" />
                         </div>
                         <div class="form-group mb-3">
                             <label>Unit Cost(&#8358)</label>
@@ -321,12 +315,12 @@
 </div>
 
 @section Scripts{
-    
+
 
 
     @*SCRIPT FOR ADDING SLASH FOR DATE*@
     @*<script>
-        
+
 
         var date = document.getElementById('datePicker');
 
@@ -334,7 +328,7 @@
             if (str.charAt(0) !== '0' || str == '00') {
             var num = parseInt(str);
             if (isNaN(num) || num <= 0 || num > max) num = 1;
-            str = num > parseInt(max.toString().charAt(0)) 
+            str = num > parseInt(max.toString().charAt(0))
                     && num.toString().length == 1 ? '0' + num : num.toString();
             };
             return str;
@@ -357,18 +351,18 @@
     </script>*@
     @*sSTOP INPUTS FROM REFRESHING*@
     <script>
-        $("#supplierInput").on('change', function(){
+        $("#supplierInput").on('change', function() {
             localStorage.setItem("supplierInput", $(this).val());
         })
-        $("#datePicker").on('change', function(){
+        $("#datePicker").on('change', function() {
             localStorage.setItem("datePicker", $(this).val());
         })
 
-        $(document).ready(function(){
-            if($("#supplierInput").length){
+        $(document).ready(function() {
+            if ($("#supplierInput").length) {
                 $("#supplierInput").val(localStorage.getItem("supplierInput"));
             }
-            if($("#datePicker").length){
+            if ($("#datePicker").length) {
                 $("#datePicker").val(localStorage.getItem("datePicker"));
             }
         })
@@ -377,394 +371,406 @@
 
 
 
-@*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR CREATION*@
-<script>
-        
-    $("#productName").change(function (){
-        var selectedVal = $(this).val();
-        var tax = $("#tax").val(0);
-        $("#taxPrice").val(0);
-        var discount = $("#discount").val(0);
-        $("#discountPrice").val(0);
+    @*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR CREATION*@
+    <script>
+
+        $("#productName").change(function() {
+            var selectedVal = $(this).val();
+            var tax = $("#tax").val(0);
+            $("#taxPrice").val(0);
+            var discount = $("#discount").val(0);
+            $("#discountPrice").val(0);
+            $("quantity").val(0);
 
 
-        $.ajax({
-            type:"GET",
-            dataType:'JSON',
-            url:"/Purchase/GetProductUsingSelectedProduct",
-            data: {productId : selectedVal},
-            success:
-                function(response){
-                    var product = response.data;
-                    console.log($("#categoryName"))
-                    
-                    $("#categoryName").val(product.category.name);
-                    $("#unitCost").val(product.costPrice);
+            $.ajax({
+                type: "GET",
+                dataType: 'JSON',
+                url: "/Purchase/GetProductUsingSelectedProduct",
+                data: { productId: selectedVal },
+                success:
+                    function(response) {
+                        var product = response.data;
+                        console.log($("#categoryName"))
 
-                },
-            error:
-                function(response){
-                    alert("Error: " + response)
-                }
-        });
-    })
-    //EDIT PRICE WHEN QUANTITY CHANGE
-    $("#quantity").change(function(){
-        var productQuantity = $("#quantity").val();
-        var unitCost = $("#unitCost").val();
-        var amount = $("#amount");
-        var totalPrice = $("#total");
-        var tax = $("#tax").val(0);
-        var discount = $("#discount").val(0);
-        $("#taxPrice").val(0);
-        $("#discountPrice").val(0);
-        pSum = productQuantity * unitCost;
+                        $("#categoryName").val(product.category.name);
+                        $("#unitCost").val(product.costPrice);
 
-        $("#priceWithDisc").val(pSum);
-        amount.val(pSum);
-
-        totalPrice.val(pSum);
-
-    })
-
-
-    ////EDIT TOTAL WHEN DISCOUNT AND TAX CHANGES
-    $("#discount, #tax").change(function(){
-        var discount = $('#discount').val();
-        var amount = parseFloat($("#amount").val());
-        var tax = $("#tax").val();
-        caldisc = (amount*discount)/100;
-        var calcPWithDisc = (amount - caldisc);
-        $("#priceWithDisc").val(calcPWithDisc.toFixed(2));
-        $("#total").val(calcPWithDisc.toFixed(2));
-        var pWithDisc = parseFloat($("#priceWithDisc").val());
-        caltax = (pWithDisc*tax)/100;
-        $("#taxPrice").val(caltax.toFixed(2));
-        $("#discountPrice").val(caldisc.toFixed(2));
-        var totalPrice = parseFloat(pWithDisc + parseFloat(caltax)).toFixed(2);
-        $("#total").val(totalPrice);
-    })
-
-    //GETTING ALL TOTAL FORM THE CONTROLLER
-    $(document).ready(function(){
-        $.ajax({
-            type:"GET",
-            dataType:"JSON",
-            url: "/Purchase/SolveTotalAmount",
-            success: function(res){
-                        $("#amountId").text(res.amount.toFixed(2));
-                        $("#discId").text(res.discount.toFixed(2));
-                        $("#dicCostId").text(res.dicsCost.toFixed(2));
-                        $("#taxId").text(res.tax.toFixed(2));
-                        $("#totalCostId").text(res.total.toFixed(2))
-                     }
-                
+                    },
+                error:
+                    function(response) {
+                        alert("Error: " + response)
+                    }
+            });
         })
-    })
+        //EDIT PRICE WHEN QUANTITY CHANGE
+        $("#quantity").change(function() {
+            var productQuantity = $("#quantity").val();
+            var unitCost = $("#unitCost").val();
+            var amount = $("#amount");
+            var totalPrice = $("#total");
+            var tax = $("#tax").val(0);
+            var discount = $("#discount").val(0);
+            $("#taxPrice").val(0);
+            $("#discountPrice").val(0);
+            pSum = productQuantity * unitCost;
 
-</script>
+            $("#priceWithDisc").val(pSum);
+            amount.val(pSum);
 
+            totalPrice.val(pSum);
 
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-
-
-@*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR EDIT*@
-<script>
-        
-    $("#editProductName").change(function (){
-        var selectedVal = $(this).val();
-        var tax = $("#editTax").val(0);
-        $("#editTaxPrice").val(0);
-        var discount = $("#editDiscount").val(0);
-        $("#editDiscountPrice").val(0);
+        })
 
 
-        $.ajax({
-            type:"GET",
-            dataType:'JSON',
-            url:"/Purchase/GetProductUsingSelectedProduct",
-            data: {productId : selectedVal},
-            success:
-                function(response){
-                    var product = response.data;
-                    console.log($("#editCategoryName"))
-                    
-                    $("#editCategoryName").val(product.category.name);
-                    $("#editUnitCost").val(product.costPrice);
+        ////EDIT TOTAL WHEN DISCOUNT AND TAX CHANGES
+        $("#discount, #tax").change(function() {
+            var discount = $('#discount').val();
+            var amount = parseFloat($("#amount").val());
+            var tax = $("#tax").val();
+            caldisc = (amount * discount) / 100;
+            var calcPWithDisc = (amount - caldisc);
+            $("#priceWithDisc").val(calcPWithDisc.toFixed(2));
+            $("#total").val(calcPWithDisc.toFixed(2));
+            var pWithDisc = parseFloat($("#priceWithDisc").val());
+            caltax = (pWithDisc * tax) / 100;
+            $("#taxPrice").val(caltax.toFixed(2));
+            $("#discountPrice").val(caldisc.toFixed(2));
+            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax)).toFixed(2);
+            $("#total").val(totalPrice);
+        })
 
-                },
-            error:
-                function(response){
-                    alert("Error: " + response)
+        //GETTING ALL TOTAL FORM THE CONTROLLER
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "/Purchase/SolveTotalAmount",
+                success: function(res) {
+                    $("#amountId").text(res.amount.toFixed(2));
+                    $("#discId").text(res.discount.toFixed(2));
+                    $("#dicCostId").text(res.dicsCost.toFixed(2));
+                    $("#taxId").text(res.tax.toFixed(2));
+                    $("#totalCostId").text(res.total.toFixed(2))
                 }
-        });
-    })
-    //EDIT PRICE WHEN QUANTITY CHANGE
-    $("#editQuantity").change(function(){
-        var productQuantity = $("#editQuantity").val();
-        var unitCost = $("#editUnitCost").val();
-        var amount = $("#editAmount");
-        var totalPrice = $("#editTotal");
-        var tax = $("#editTax").val(0);
-        var discount = $("#editDiscount").val(0);
-        $("#editTaxPrice").val(0);
-        $("#editDiscountPrice").val(0);
-        pSum = productQuantity * unitCost;
 
-        $("#editPriceWithDisc").val(pSum);
-        amount.val(pSum);
+            })
+        })
 
-        totalPrice.val(pSum);
-
-    })
+    </script>
 
 
-    ////EDIT TOTAL WHEN DISCOUNT CHANGES
-    $("#editDiscount, #editTax").change(function(){
-        var discount = $('#editDiscount').val();
-        var amount = parseFloat($("#editAmount").val());
-        var tax = $("#editTax").val();
-        caldisc = (amount*discount)/100;
-        var calcPWithDisc = (amount - caldisc);
-        $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
-        $("#editTotal").val(calcPWithDisc.toFixed(2));
-        $("#editDiscountPrice").val(caldisc.toFixed(2));
-        var pWithDisc = parseFloat($("#editPriceWithDisc").val());
-        caltax = (pWithDisc*tax)/100;
-        $("#editTaxPrice").val(caltax.toFixed(2));
-        var totalPrice = ( pWithDisc + parseFloat(caltax))
-        $("#editTotal").val(totalPrice.toFixed(2));
-    })
-
-</script>
-
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
-@*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
 
 
+    @*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR EDIT*@
+    <script>
 
-@*SCRIPT FOR ALL CRUD FUNCTIONS*@
-    
-<script>
+        $("#editProductName").change(function() {
+            var selectedVal = $(this).val();
+            var tax = $("#editTax").val(0);
+            $("#editTaxPrice").val(0);
+            var discount = $("#editDiscount").val(0);
+            $("#editDiscountPrice").val(0);
 
-     //ADDING CREATED STOCK TO LIST SCRIPTS
-     $(document).ready(function(){
-         $("#btnSave").click(function(event) {
-             var selectedVal = $("#productName").val();
-             event.preventDefault();
+
             $.ajax({
-                type:"GET",
-                dataType:'JSON',
-                url:"/Purchase/GetProductUsingSelectedProduct",
-                data: {productId : selectedVal},
+                type: "GET",
+                dataType: 'JSON',
+                url: "/Purchase/GetProductUsingSelectedProduct",
+                data: { productId: selectedVal },
                 success:
-                    function(response){
-                        var product = response.data; 
-                        var purchaseData = {
-                            ProductId : selectedVal,
-                            CategoryId : product.categoryId,
-                            Quantity : stockFormData.quantity.value,
-                            Amount : stockFormData.amount.value,
-                            DiscountPrice : stockFormData.discountPrice.value,
-                            DiscountedCost : stockFormData.priceWithDisc.value,
-                            TaxPrice : stockFormData.taxPrice.value,
-                            Price : stockFormData.total.value
-                        }
+                    function(response) {
+                        var product = response.data;
+                        console.log($("#editCategoryName"))
 
-                        $.ajax({
-                             type: "POST",
-                             url: "/Purchase/Create",
-                             //data: JSON.stringify(PostCustomer),
-                             data: purchaseData,
-                             dataType: "json",
-                             //contentType: 'application/json; charset=utf-8',
-                             traditional: true,
-                             success: function(r){
-
-                                 if(r.msg == "success"){
-                                      window.location.href="/Purchase/Index";
-                                 }
-                             }
-                        })
+                        $("#editCategoryName").val(product.category.name);
+                        $("#editUnitCost").val(product.costPrice);
 
                     },
                 error:
-                    function(response){
+                    function(response) {
                         alert("Error: " + response)
                     }
             });
-             
-             
+        })
+        //EDIT PRICE WHEN QUANTITY CHANGE
+        $("#editQuantity").change(function() {
+            var productQuantity = $("#editQuantity").val();
+            var unitCost = $("#editUnitCost").val();
+            var amount = $("#editAmount");
+            var totalPrice = $("#editTotal");
+            var tax = $("#editTax").val(0);
+            var discount = $("#editDiscount").val(0);
+            $("#editTaxPrice").val(0);
+            $("#editDiscountPrice").val(0);
+            pSum = productQuantity * unitCost;
 
-         })
-     })
+            $("#editPriceWithDisc").val(pSum);
+            amount.val(pSum);
+
+            totalPrice.val(pSum);
+
+        })
+
+
+        ////EDIT TOTAL WHEN DISCOUNT CHANGES
+        $("#editDiscount, #editTax").change(function() {
+            var discount = $('#editDiscount').val();
+            var amount = parseFloat($("#editAmount").val());
+            var tax = $("#editTax").val();
+            caldisc = (amount * discount) / 100;
+            var calcPWithDisc = (amount - caldisc);
+            $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
+            $("#editTotal").val(calcPWithDisc.toFixed(2));
+            $("#editDiscountPrice").val(caldisc.toFixed(2));
+            var pWithDisc = parseFloat($("#editPriceWithDisc").val());
+            caltax = (pWithDisc * tax) / 100;
+            $("#editTaxPrice").val(caltax.toFixed(2));
+            var totalPrice = (pWithDisc + parseFloat(caltax))
+            $("#editTotal").val(totalPrice.toFixed(2));
+        })
+
+    </script>
+
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+    @*///////////////////////////////////////////////////////////*@
+
+
+
+    @*SCRIPT FOR ALL CRUD FUNCTIONS*@
+
+    <script>
+
+        //ADDING CREATED STOCK TO LIST SCRIPTS
+        $(document).ready(function() {
+            $("#btnSave").click(function(event) {
+                var selectedVal = $("#productName").val();
+                event.preventDefault();
+                if ($("#quantity").val() == 0 || null) {
+                    alert("hey add a quanity to your product")
+                } else {
+
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'JSON',
+                        url: "/Purchase/GetProductUsingSelectedProduct",
+                        data: { productId: selectedVal },
+                        success:
+                            function(response) {
+                                var product = response.data;
+                                var purchaseData = {
+                                    ProductId: selectedVal,
+                                    CategoryId: product.categoryId,
+                                    Quantity: stockFormData.quantity.value,
+                                    Amount: stockFormData.amount.value,
+                                    DiscountPrice: stockFormData.discountPrice.value,
+                                    DiscountedCost: stockFormData.priceWithDisc.value,
+                                    TaxPrice: stockFormData.taxPrice.value,
+                                    Price: stockFormData.total.value
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Purchase/Create",
+                                    //data: JSON.stringify(PostCustomer),
+                                    data: purchaseData,
+                                    dataType: "json",
+                                    //contentType: 'application/json; charset=utf-8',
+                                    traditional: true,
+                                    success: function(r) {
+
+                                        if (r.msg == "success") {
+                                            window.location.href = "/Purchase/AddNewPurchaseItem";
+                                        }
+                                    }
+                                })
+
+                            },
+                        error:
+                            function(response) {
+                                alert("Error: " + response)
+                            }
+                    });
+                }
+
+
+
+            })
+        })
 
         ///////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////
 
-     //SCRIPT FOR SAVING EDITED ITEM
-     //EDIT STOCK ITEM SCRIPTS
-    $(document).delegate("#btnEdit","click",function(e){
+        //SCRIPT FOR SAVING EDITED ITEM
+        //EDIT STOCK ITEM SCRIPTS
+        $(document).delegate("#btnEdit", "click", function(e) {
 
-         Category = $(this).attr('selectedCategory');
-         Product = $(this).attr('selectedProduct');
-         UnitPrice = $(this).attr('selectedUnitP');
-         Quantity = $(this).attr('selectedQuantity');
-         Amount = $(this).attr('selectedAmount');
-         Discount = $(this).attr('selectedDiscount');
-         DiscountedCost = $(this).attr('selectedDiscountedC');
-         Tax = $(this).attr('selectedTax');
-         Price = $(this).attr('selectedPrice');
-         Id = $(this).attr('selectedId');
-
-
-         $("#editCategoryName").val(Category);
-         var productName = $("#editProductName");
-         $('#editQuantity').val(Quantity);
-         $('#editUnitCost').val(UnitPrice);
-         $('#editAmount').val(Amount);
-         $('#editDiscountPrice').val(Discount);
-         $('#editPriceWithDisc').val(DiscountedCost);
-         $('#editTaxPrice').val(Tax);
-         $("#editTotal").val(Price);
-
-         const keys = Object.keys(productName);
-         productName[keys[0]].value = Product;
-
-        $("#btnEditSave").click(function(event) {
-             var selectedVal = $("#editProductName").val();
-             console.log(selectedVal)
-             event.preventDefault();
-            $.ajax({
-                type:"GET",
-                dataType:'JSON',
-                url:"/Purchase/GetProductUsingSelectedProduct",
-                data: {productId : selectedVal},
-                success:
-                    function(response){
-                        var stock = response.data;
-                        var stockData = {
-                            Id : Id,
-                            ProductId : selectedVal,
-                            CategoryId : stock.categoryId,
-                            Quantity : $('#editQuantity').val(),
-                            Amount : $('#editAmount').val(),
-                            DiscountPrice : $('#editDiscountPrice').val(),
-                            DiscountedCost : $('#editPriceWithDisc').val(),
-                            TaxPrice : $('#editTaxPrice').val(),
-                            Price : $("#editTotal").val()
-                        }
-
-                        $.ajax({
-                             type: "POST",
-                             url: "/Purchase/Edit",
-                             data: stockData,
-                             dataType: "json",
-                             //contentType: 'application/json; charset=utf-8',
-                             traditional: true,
-                             success: function(r){
-
-                                 if(r.msg == "success"){
-                                      window.location.href="/Purchase/Index";
-                                 }
-                             }
-                        })
-
-                    },
-                error:
-                    function(response){
-                        alert("Error: " + response)
-                    }
-            });
- 
-
-         })
-    })
-
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////
+            Category = $(this).attr('selectedCategory');
+            Product = $(this).attr('selectedProduct');
+            UnitPrice = $(this).attr('selectedUnitP');
+            Quantity = $(this).attr('selectedQuantity');
+            Amount = $(this).attr('selectedAmount');
+            Discount = $(this).attr('selectedDiscount');
+            DiscountedCost = $(this).attr('selectedDiscountedC');
+            Tax = $(this).attr('selectedTax');
+            Price = $(this).attr('selectedPrice');
+            Id = $(this).attr('selectedId');
 
 
-    //DELETE STOCK ITEM SCRIPTS
-    $(document).delegate("#btnDelete","click",function(e){
-        Id = $(this).attr('selectedId');
-        console.log(Id)
-        $("#btnDeleteSave").click(function(event) {
-            event.preventDefault();
+            $("#editCategoryName").val(Category);
+            var productName = $("#editProductName");
+            $('#editQuantity').val(Quantity);
+            $('#editUnitCost').val(UnitPrice);
+            $('#editAmount').val(Amount);
+            $('#editDiscountPrice').val(Discount);
+            $('#editPriceWithDisc').val(DiscountedCost);
+            $('#editTaxPrice').val(Tax);
+            $("#editTotal").val(Price);
 
-            var purchaseDataId = {
-                Id: parseInt(Id),
-            }
-            console.log(purchaseDataId)
-            $.ajax({
+            const keys = Object.keys(productName);
+            productName[keys[0]].value = Product;
+
+            $("#btnEditSave").click(function(event) {
+                var selectedVal = $("#editProductName").val();
+                console.log(selectedVal)
+                event.preventDefault();
+                if($("#editQuantity").val() == 0 || null) {
+                    console.log("hey there add a quantity")
+
+                }else{
+
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'JSON',
+                        url: "/Purchase/GetProductUsingSelectedProduct",
+                        data: { productId: selectedVal },
+                        success:
+                            function(response) {
+                                var stock = response.data;
+                                var stockData = {
+                                    Id: Id,
+                                    ProductId: selectedVal,
+                                    CategoryId: stock.categoryId,
+                                    Quantity: $('#editQuantity').val(),
+                                    Amount: $('#editAmount').val(),
+                                    DiscountPrice: $('#editDiscountPrice').val(),
+                                    DiscountedCost: $('#editPriceWithDisc').val(),
+                                    TaxPrice: $('#editTaxPrice').val(),
+                                    Price: $("#editTotal").val()
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Purchase/Edit",
+                                    data: stockData,
+                                    dataType: "json",
+                                    //contentType: 'application/json; charset=utf-8',
+                                    traditional: true,
+                                    success: function(r) {
+
+                                        if (r.msg == "success") {
+                                            window.location.href = "/Purchase/AddNewPurchaseItem";
+                                        }
+                                    }
+                                })
+
+                            },
+                        error:
+                            function(response) {
+                                alert("Error: " + response)
+                            }
+                    });
+                }
+
+
+            })
+        })
+
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+
+
+        //DELETE STOCK ITEM SCRIPTS
+        $(document).delegate("#btnDelete", "click", function(e) {
+            Id = $(this).attr('selectedId');
+            console.log(Id)
+            $("#btnDeleteSave").click(function(event) {
+                event.preventDefault();
+
+                var purchaseDataId = {
+                    Id: parseInt(Id),
+                }
+                console.log(purchaseDataId)
+                $.ajax({
                     type: "DELETE",
                     url: "/Purchase/Delete",
                     data: purchaseDataId,
                     dataType: "json",
                     traditional: true,
-                    success: function(r){
+                    success: function(r) {
 
-                        if(r.msg == "success"){
-                                window.location.href="/Purchase/Index";
+                        if (r.msg == "success") {
+                            window.location.href = "/Purchase/AddNewPurchaseItem";
                         }
                     }
+                })
             })
         })
-    })
 
-</script>
+    </script>
 
-@*FINAL SAVE BUTTON SCRIPT TO SAVE TO THE OTHER PAGES*@
+    @*FINAL SAVE BUTTON SCRIPT TO SAVE TO THE OTHER PAGES*@
 
-<script>
-    $("#btnSubmitSave").click(function(){
-        
-        var reportData = {
-            PurchaseDate : $('#datePicker').val(),
-            SupplierId : $('#supplierInput').val(),
-            TotalCost : $('#totalCostId').text()
-        }
+    <script>
+        $("#btnSubmitSave").click(function() {
 
-        if(reportData.TotalCost == 0.00 ){
-            alert("add a product to list")
-        }else if(reportData.SupplierId == null){
-            alert("add a supplier")
-        }else if(reportData.PurchaseDate == ''){
-            alert("add a date")
-        }else{
-            $.ajax({
-                type: "POST",
-                url: "/Purchase/CreatingReportAndSummary",
-                data: reportData,
-                dataType: "json",
-                traditional: true,
-                success: function(r) {
+            var reportData = {
+                PurchaseDate: $('#datePicker').val(),
+                SupplierId: $('#supplierInput').val(),
+                TotalCost: $('#totalCostId').text()
+            }
 
-                    if (r.msg == "success") {
-                        window.location.href = "/Purchase/PurchaseSummary";
+            if (reportData.TotalCost == 0.00) {
+                alert("add a product to list")
+            } else if (reportData.SupplierId == null) {
+                alert("add a supplier")
+            } else if (reportData.PurchaseDate == '') {
+                alert("add a date")
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Purchase/CreatingReportAndSummary",
+                    data: reportData,
+                    dataType: "json",
+                    traditional: true,
+                    success: function(r) {
+
+                        if (r.msg == "success") {
+                            window.location.href = "/Purchase/PurchaseSummary";
+                        }
                     }
+                });
+
+                if ($("#supplierInput").length) {
+                    $("#supplierInput").val(localStorage.removeItem("supplierInput"));
                 }
-            });
-
-            if($("#supplierInput").length){
-                $("#supplierInput").val(localStorage.removeItem("supplierInput"));
+                if ($("#datePicker").length) {
+                    $("#datePicker").val(localStorage.removeItem("datePicker"));
+                }
             }
-            if($("#datePicker").length){
-                $("#datePicker").val(localStorage.removeItem("datePicker"));
-            }
-        }
 
-    })
-</script>
+        })
+    </script>
 
 }

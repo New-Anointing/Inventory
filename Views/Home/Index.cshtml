@@ -1,7 +1,12 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     Layout = "";
     ViewData["Title"] = "Home Page";
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,16 +49,31 @@
             </p>
 
         </div>
-        <div class="container buttonDiv">
-            <div class="row">
-                <div class="col-lg-3 col-sm-12 offset-lg-3 ">
-                    <a class="loginLinkBtn" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                </div>
-                <div class="col-lg-3 col-sm-12">
-                    <a class="RegisterLinkBtn" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="container buttonDiv">
+                <div class="d-flex justify-content-center">
+                    <div class="col-lg-3 col-sm-12">
+                        <a class="loginLinkBtn" asp-controller="Dashboard" asp-action="Index">DashBoard</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+
+            <div class="container buttonDiv">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-12 offset-lg-3 ">
+                        <a class="loginLinkBtn" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </div>
+                    <div class="col-lg-3 col-sm-12">
+                        <a class="RegisterLinkBtn" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+
+        }
     </div>
 
 
@@ -61,7 +81,7 @@
     <!--Start Footer-->
     <!-- Footer Start -->
     @*    <footer class="footer text-center text-sm-start">
-        </footer>*@
+    </footer>*@
     <!-- end Footer -->
     <!--end footer-->
     <!-- Javascript  -->
