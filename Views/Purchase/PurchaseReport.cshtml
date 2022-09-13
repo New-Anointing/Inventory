@@ -1,4 +1,4 @@
-﻿@model Stock_keeping.Models.PurchaseReport
+﻿@model Stock_keeping.ViewModels.PurchaseReportDateFilterVM
 
 @{
     ViewData["Title"] = "PurchaseReport";
@@ -31,13 +31,19 @@
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <div class="date-div mb-4 w-50">
-                            <span>Select Date</span>
-                            <input class="form-control" type="date" id="datePicker"/>
+                        <div class="date-div mb-4 w-25">
+                            <form>
+                                <h5>Stort List</h5>
+                                <span>Select Start Date</span>
+                                <input class="form-control mb-2" asp-for="StartDate" type="date" id="datePicker"/>
+                                <span>Select End Date</span>
+                                <input class="form-control mb-2" asp-for="EndDate" type="date" id="datePicker"/>
+                                <button class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" type="submit">Submit</button>
+                            </form>
                         </div>
 
                         <div class="mb-2">
-                            <a  class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="index" >Add New Stock</a>
+                            <a  class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="AddNewPurchaseItem" >Add New Stock</a>
                         </div>
                         <div class="table-div">
                             <table class="table table-bordered">
@@ -58,7 +64,7 @@
                                         Cost(&#8358)
                                     </th>
                                 </tr>
-                                @foreach (var item in ViewBag.PurchaseReport)
+                                @foreach (var item in Model.PurchaseReport)
                                 {
                                     <tr>
                                         <td>

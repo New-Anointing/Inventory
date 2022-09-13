@@ -1,4 +1,4 @@
-﻿@model Stock_keeping.Models.PurchaseSummary
+﻿@model Stock_keeping.ViewModels.PurchaseSummaryDateFilterVM
 
 @{
     ViewData["Title"] = "PurchaseSummary";
@@ -31,17 +31,19 @@
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <div class="date-div mb-4 w-25">
-                            <span>Select Start Date</span>
-                            <input class="form-control" type="date" id="startDate"/>
-                        </div>
-                        <div class="date-div mb-4 w-25">
-                            <span>Select End Date</span>
-                            <input class="form-control" type="date" id="endDate"/>
+                       <div class="date-div mb-4 w-25">
+                            <form>
+                                <h5>Stort List</h5>
+                                <span>Select Start Date</span>
+                                <input class="form-control mb-2" asp-for="StartDate" type="date" id="datePicker"/>
+                                <span>Select End Date</span>
+                                <input class="form-control mb-2" asp-for="EndDate" type="date" id="datePicker"/>
+                                <button class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" type="submit">Submit</button>
+                            </form>
                         </div>
 
                         <div class="mb-2">
-                            <a  class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="PurchaseReport" >Purchase Report</a>
+                            <a class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="PurchaseReport">Purchase Report</a>
                         </div>
                         <div class="table-div">
                             <table class="table table-bordered">
@@ -57,7 +59,7 @@
                                         Cost(&#8358)
                                     </th>
                                 </tr>
-                                @foreach (var item in ViewBag.PurchaseSummary)
+                                @foreach (var item in Model.PurchaseSummary)
                                 {
                                     <tr>
                                         <td>
@@ -73,32 +75,32 @@
                                     </tr>
                                 }
                                 @*<tr style="">
-                                    <td style="color:white; background:#2ea80c;" colspan="4">
-                                        Sum-Total(&#8358):
-                                    </td>
-                                    <td style="color:white; background:#2ea80c;" id="amountId">
-                                        
-                                    </td>
-                                    <td style="color:white; background:#2ea80c;" id="discId">
-                                        
-                                    </td>
-                                    <td style="color:white; background:#2ea80c;" id="dicCostId">
-                                        
-                                    </td>
-                                    <td style="color:white; background:#2ea80c;" id="taxId">
-                                        
-                                    </td>
-                                    <td style="color:white; background:#2ea80c;" id="totalCostId">
-                                        
-                                    </td>
-                                    <td style="width:150px;">
-                                        <div class="btn-group w-75">
-                                             <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
-                                                  <i class="bi bi-save"></i> Save
-                                             </button>
+                                <td style="color:white; background:#2ea80c;" colspan="4">
+                                Sum-Total(&#8358):
+                                </td>
+                                <td style="color:white; background:#2ea80c;" id="amountId">
 
-                                        </div>
-                                    </td>
+                                </td>
+                                <td style="color:white; background:#2ea80c;" id="discId">
+
+                                </td>
+                                <td style="color:white; background:#2ea80c;" id="dicCostId">
+
+                                </td>
+                                <td style="color:white; background:#2ea80c;" id="taxId">
+
+                                </td>
+                                <td style="color:white; background:#2ea80c;" id="totalCostId">
+
+                                </td>
+                                <td style="width:150px;">
+                                <div class="btn-group w-75">
+                                <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
+                                <i class="bi bi-save"></i> Save
+                                </button>
+
+                                </div>
+                                </td>
                                 </tr>*@
                             </table>
                         </div>
@@ -112,14 +114,14 @@
 
 @section Scripts{
     <script>
-        $("#btn").click(function(e){
+        $("#btn").click(function(e) {
             e.preventDefault();
             var startDate = $("#startDate").val();
             var endDate = $("#endDate").val();
 
-            if(startDate > endDate){
+            if (startDate > endDate) {
                 console.log("yes");
-            }else{
+            } else {
                 console.log("no");
             }
         })

@@ -1,0 +1,674 @@
+﻿@model Stock_keeping.Models.SalesList
+@{
+    ViewData["Title"] = "AddSoldItems";
+}
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inventory</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                        <li class="breadcrumb-item active">Editable</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Sales</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Sales </h4>
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <div class="supplier-div mb-4 w-50">
+                            <span>Select Customer</span>
+                            <select id="customerInput" value="" class="form-control" asp-items="@ViewBag.Customer"></select>
+                        </div>
+
+                        <div class="date-div mb-4 w-50">
+                            <span>Select Date</span>
+                            <input class="form-control" type="date" id="salesDatePicker" />
+                        </div>
+
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" data-bs-toggle="modal" data-bs-target="#salesCreateModal">Add New Product To List</button>
+                        </div>
+                        <div class="table-div">
+                            <table class="table table-bordered">
+                                <tr class="bg-primary">
+                                    <th style="color:white;">
+                                        Product
+                                    </th>
+                                    <th style="color:white;">
+                                        Quntity
+                                    </th>
+                                    <th style="color:white;">
+                                        Unit Cost(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Amount(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Discount(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Cost After Discount(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Tax(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Total(&#8358)
+                                    </th>
+                                    <th style="color:white;">
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in ViewBag.SalesList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Product.Name
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            ₦@item.Product.CostPrice
+                                        </td>
+                                        <td>
+                                            ₦@item.Amount
+                                        </td>
+                                        <td>
+                                            ₦@item.DiscountPrice
+                                        </td>
+                                        <td>
+                                            ₦@item.DiscountedCost
+                                        </td>
+                                        <td>
+                                            ₦@item.TaxPrice
+                                        </td>
+                                        <td>
+                                            ₦@item.Price
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="btn-group w-75" role="group">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#stockEditModal" title="Update Stock" selectedProduct="@item.Product.Id" selectedId="@item.Id" selectedQuantity="@item.Quantity" selectedUnitP="@item.Product.CostPrice" selectedAmount="@item.Amount" selectedDiscount="@item.DiscountPrice" selectedDiscountedC="@item.DiscountedCost" selectedTax="@item.TaxPrice" selectedPrice="@item.Price">
+                                                    <i class="bi bi-pencil-square"></i>Edit
+                                                </button>
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
+                                                    <i class="bi bi-trash"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                                <tr style="">
+                                    <td style="color:white; background:#2ea80c;" colspan="3">
+                                        Sum-Total(&#8358):
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="amountId">
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="discId">
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="dicCostId">
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="taxId">
+                                    </td>
+                                    <td style="color:white; background:#2ea80c;" id="totalCostId">
+                                    </td>
+                                    <td style="width:150px;">
+                                        <div class="btn-group w-75">
+                                            <button type="submit" class="btn btn-small text-white mx-2" id="btnSubmitSave" style="background:#2ea80c;">
+                                                <i class="bi bi-save"></i> Save
+                                            </button>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    <!--creat form modal-->
+    <!-- Modals -->
+    <!-- Create modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="salesCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Purchased Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="stockFormData">
+                        <div class="form-group mb-3">
+                            <label>Product Name</label>
+                            <select class="form-control" id="productName" type="text" asp-items="@ViewBag.Product">
+                                <option>-- --Select Product-- --</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Quantity</label>
+                            <input class="form-control" type="number" min="1" id="quantity" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Unit Cost(&#8358)</label>
+                            <input disabled class="form-control" id="unitCost" placeholder="Unit Cost">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Amount(&#8358)</label>
+                            <input disabled class="form-control" id="amount" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Discount%</label>
+                            <input class="form-control" type="number" min="0" id="discount" placeholder="Discount in %">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Discount(&#8358)</label>
+                            <input class="form-control" disabled id="discountPrice" placeholder="DiscountPrice">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Cost After Discount(&#8358)</label>
+                            <input class="form-control" disabled id="priceWithDisc">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Tax%</label>
+                            <input class="form-control" type="number" min="0" id="tax" placeholder="Tax in %">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Tax(&#8358)</label>
+                            <input class="form-control" disabled id="taxPrice" placeholder="TaxPrice">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Total(&#8358)</label>
+                            <input disabled class="form-control" id="total" placeholder="Total">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSave" class="btn btn-primary">Add To List</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="stockEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Purchased Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="stockEditFormData">
+                        <div class="form-group mb-3">
+                            <label>Product Name</label>
+                            <select class="form-control" id="editProductName" type="text" asp-items="@ViewBag.Product">
+                                <option>-- --Select Product-- --</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Quantity</label>
+                            <input class="form-control" min="1" id="editQuantity" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Unit Cost(&#8358)</label>
+                            <input disabled class="form-control" id="editUnitCost" placeholder="Unit Cost">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Amount(&#8358)</label>
+                            <input disabled class="form-control" id="editAmount" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Discount%</label>
+                            <input class="form-control" min="0" id="editDiscount" placeholder="Discount in %">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Discount(&#8358)</label>
+                            <input class="form-control" disabled min="0" id="editDiscountPrice" placeholder="DiscountPrice">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Cost After Discount(&#8358)</label>
+                            <input class="form-control" disabled id="editPriceWithDisc">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Tax%</label>
+                            <input class="form-control" min="0" id="editTax" placeholder="Tax in %">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Tax(&#8358)</label>
+                            <input class="form-control" disabled min="0" id="editTaxPrice" placeholder="TaxPrice">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Total(&#8358)</label>
+                            <input disabled class="form-control" id="editTotal" placeholder="Total">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnEditSave" class="btn btn-primary">Save Edit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Purchased Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span style="color:red;"><i class="bi bi-exclamation-circle"></i> Warning</span>
+                    <h5>Are you sure you want to delete this item?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnDeleteSave" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @*sSTOP INPUTS FROM REFRESHING*@
+    <script>
+        $("#customerInput").on('change', function() {
+            localStorage.setItem("customerInput", $(this).val());
+        })
+        $("#salesDatePicker").on('change', function() {
+            localStorage.setItem("salesDatePicker", $(this).val());
+        })
+
+        $(document).ready(function() {
+            if ($("#customerInput").length) {
+                $("#customerInput").val(localStorage.getItem("customerInput"));
+            }
+            if ($("#salesDatePicker").length) {
+                $("#salesDatePicker").val(localStorage.getItem("salesDatePicker"));
+            }
+        })
+    </script>
+
+
+
+
+    @*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR CREATION*@
+    <script>
+
+        //Script for currency conversion
+        let currencyFunc = (x) => {
+
+            const CurrencyChanger = new Intl.NumberFormat('en-NG',
+                { style: 'currency', currency: 'NGN' }
+            ).format(x);
+            return (CurrencyChanger);
+        }
+        let backToNumFunc = (x) => {
+            const CurToString = x.replace(/₦/, '').replace(/,/, '');
+            const StrToNum = parseFloat(CurToString)
+            return (StrToNum);
+        }
+
+        $("#productName").change(function() {
+            var selectedVal = $(this).val();
+            var tax = $("#tax").val(0);
+            $("#taxPrice").val(0); currencyFunc
+            var discount = $("#discount").val(0);
+            $("#discountPrice").val(0);
+            $("#quantity").val(0);
+            $("#amount").val(0);
+            $("#priceWithDisc").val(0);
+            $("#total").val(0);
+
+
+            $.ajax({
+                type: "GET",
+                dataType: 'JSON',
+                url: "/Purchase/GetProductUsingSelectedProduct",
+                data: { productId: selectedVal },
+                success:
+                    function(response) {
+                        var product = response.data;
+                        var cp = currencyFunc(product.costPrice);
+                        $("#unitCost").val(cp);
+
+                    },
+                error:
+                    function(response) {
+                        alert("Error: " + response)
+                    }
+            });
+        })
+        //EDIT PRICE WHEN QUANTITY CHANGE
+        $("#quantity").change(function() {
+            var productQuantity = $("#quantity").val();
+            var unitCost = backToNumFunc($("#unitCost").val());
+            var amount = $("#amount");
+            var totalPrice = $("#total");
+            var tax = $("#tax").val(0);
+            var discount = $("#discount").val(0);
+            $("#taxPrice").val(0);
+            $("#discountPrice").val(0);
+            pSum = currencyFunc((productQuantity * unitCost));
+
+            $("#priceWithDisc").val(pSum);
+            amount.val(pSum);
+
+            totalPrice.val(pSum);
+
+        })
+
+
+        ////EDIT TOTAL WHEN DISCOUNT AND TAX CHANGES
+        $("#discount, #tax").change(function() {
+            var discount = $('#discount').val();
+            var amount = backToNumFunc($("#amount").val());
+            var tax = $("#tax").val();
+            caldisc = (amount * discount) / 100;
+            var calcPWithDisc = (amount - caldisc);
+            $("#priceWithDisc").val(currencyFunc(calcPWithDisc));
+            $("#total").val(currencyFunc(calcPWithDisc));
+            var pWithDisc = $("#priceWithDisc").val();
+            pWithDisc = backToNumFunc(pWithDisc);
+            caltax = (pWithDisc * tax) / 100;
+            $("#taxPrice").val(currencyFunc(caltax));
+            $("#discountPrice").val(currencyFunc(caldisc));
+            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax));
+            $("#total").val(currencyFunc(totalPrice));
+        })
+
+        //GETTING ALL TOTAL FORM THE CONTROLLER
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "/Sales/SolveTotalAmount",
+                success: function(res) {
+                    $("#amountId").text(currencyFunc(res.amount));
+                    $("#discId").text(currencyFunc(res.discount));
+                    $("#dicCostId").text(currencyFunc(res.dicsCost));
+                    $("#taxId").text(currencyFunc(res.tax));
+                    $("#totalCostId").text(currencyFunc(res.total));
+                }
+
+            })
+        })
+
+
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+
+
+
+
+            $("#editProductName").change(function() {
+                var selectedVal = $(this).val();
+                var tax = $("#editTax").val(0);
+                $("#editTaxPrice").val(0);
+                var discount = $("#editDiscount").val(0);
+                $("#editDiscountPrice").val(0);
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: 'JSON',
+                    url: "/Purchase/GetProductUsingSelectedProduct",
+                    data: { productId: selectedVal },
+                    success:
+                        function(response) {
+                            var product = response.data;
+                            console.log($("#editCategoryName"))
+
+                            $("#editCategoryName").val(product.category.name);
+                            $("#editUnitCost").val(product.costPrice);
+
+                        },
+                    error:
+                        function(response) {
+                            alert("Error: " + response)
+                        }
+                });
+            })
+        //EDIT PRICE WHEN QUANTITY CHANGE
+        $("#editQuantity").change(function() {
+            var productQuantity = $("#editQuantity").val();
+            var unitCost = $("#editUnitCost").val();
+            var amount = $("#editAmount");
+            var totalPrice = $("#editTotal");
+            var tax = $("#editTax").val(0);
+            var discount = $("#editDiscount").val(0);
+            $("#editTaxPrice").val(0);
+            $("#editDiscountPrice").val(0);
+            pSum = productQuantity * unitCost;
+
+            $("#editPriceWithDisc").val(pSum);
+            amount.val(pSum);
+
+            totalPrice.val(pSum);
+
+        })
+
+
+        ////EDIT TOTAL WHEN DISCOUNT CHANGES
+        $("#editDiscount, #editTax").change(function() {
+            var discount = $('#editDiscount').val();
+            var amount = parseFloat($("#editAmount").val());
+            var tax = $("#editTax").val();
+            caldisc = (amount * discount) / 100;
+            var calcPWithDisc = (amount - caldisc);
+            $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
+            $("#editTotal").val(calcPWithDisc.toFixed(2));
+            $("#editDiscountPrice").val(caldisc.toFixed(2));
+            var pWithDisc = parseFloat($("#editPriceWithDisc").val());
+            caltax = (pWithDisc * tax) / 100;
+            $("#editTaxPrice").val(caltax.toFixed(2));
+            var totalPrice = (pWithDisc + parseFloat(caltax))
+            $("#editTotal").val(totalPrice.toFixed(2));
+        })
+
+
+
+
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+        @*///////////////////////////////////////////////////////////*@
+
+
+
+        @*SCRIPT FOR ALL CRUD FUNCTIONS*@
+
+
+
+            //ADDING CREATED STOCK TO LIST SCRIPTS
+            $(document).ready(function() {
+                $("#btnSave").click(function(event) {
+                    var selectedVal = $("#productName").val();
+                    event.preventDefault();
+                    var salesData = {
+                        ProductId: selectedVal,
+                        Quantity: stockFormData.quantity.value,
+                        Amount: backToNumFunc(stockFormData.amount.value),
+                        DiscountPrice: backToNumFunc(stockFormData.discountPrice.value),
+                        DiscountedCost: backToNumFunc(stockFormData.priceWithDisc.value),
+                        TaxPrice: backToNumFunc(stockFormData.taxPrice.value),
+                        Price: backToNumFunc(stockFormData.total.value)
+                    }
+                    if (salesData.Quantity == 0 || null) {
+                        console.log("hey add a quantity")
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Sales/Create",
+                            //data: JSON.stringify(PostCustomer),
+                            data: salesData,
+                            dataType: "json",
+                            //contentType: 'application/json; charset=utf-8',
+                            traditional: true,
+                            success: function(r) {
+
+                                if (r.msg == "success") {
+                                    window.location.href = "/Sales/AddSoldItems";
+                                }
+                            }
+                        })
+
+                    }
+                });
+
+
+
+            })
+
+
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+
+        //SCRIPT FOR SAVING EDITED ITEM
+        //EDIT STOCK ITEM SCRIPTS
+        $(document).delegate("#btnedit", "click", function(e) {
+            product = $(this).attr('selectedproduct');
+            unitprice = $(this).attr('selectedunitp');
+            quantity = $(this).attr('selectedquantity');
+            amount = $(this).attr('selectedamount');
+            discount = $(this).attr('selecteddiscount');
+            discountedcost = $(this).attr('selecteddiscountedc');
+            tax = $(this).attr('selectedtax');
+            price = $(this).attr('selectedprice');
+            id = $(this).attr('selectedid');
+
+
+            $("#editcategoryname").val(category);
+            var productname = $("#editproductname");
+            $('#editquantity').val(quantity);
+            $('#editunitcost').val(unitprice);
+            $('#editamount').val(amount);
+            $('#editdiscountprice').val(discount);
+            $('#editpricewithdisc').val(discountedcost);
+            $('#edittaxprice').val(tax);
+            $("#edittotal").val(price);
+
+            const keys = object.keys(productname);
+            productname[keys[0]].value = product;
+
+            $("#btneditsave").click(function(event) {
+                var selectedval = $("#editproductname").val();
+                console.log(selectedval)
+                event.preventdefault();
+                $.ajax({
+                    type: "get",
+                    datatype: 'json',
+                    url: "/purchase/getproductusingselectedproduct",
+                    data: { productid: selectedval },
+                    success:
+                        function(response) {
+                            var stock = response.data;
+                            var stockdata = {
+                                id: id,
+                                productid: selectedval,
+                                categoryid: stock.categoryid,
+                                quantity: $('#editquantity').val(),
+                                amount: $('#editamount').val(),
+                                discountprice: $('#editdiscountprice').val(),
+                                discountedcost: $('#editpricewithdisc').val(),
+                                taxprice: $('#edittaxprice').val(),
+                                price: $("#edittotal").val()
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                url: "/purchase/edit",
+                                data: stockdata,
+                                datatype: "json",
+                                //contenttype: 'application/json; charset=utf-8',
+                                traditional: true,
+                                success: function(r) {
+
+                                    if (r.msg == "success") {
+                                        window.location.href = "/purchase/index";
+                                    }
+                                }
+                            })
+
+                        },
+                    error:
+                        function(response) {
+                            alert("error: " + response)
+                        }
+                });
+
+
+            })
+        })
+
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+
+
+        //DELETE STOCK ITEM SCRIPTS
+        $(document).delegate("#btnDelete", "click", function(e) {
+            Id = $(this).attr('selectedId');
+            console.log(Id)
+            $("#btnDeleteSave").click(function(event) {
+                event.preventDefault();
+
+                var purchaseDataId = {
+                    Id: parseInt(Id),
+                }
+                console.log(purchaseDataId)
+                $.ajax({
+                    type: "DELETE",
+                    url: "/Purchase/Delete",
+                    data: purchaseDataId,
+                    dataType: "json",
+                    traditional: true,
+                    success: function(r) {
+
+                        if (r.msg == "success") {
+                            window.location.href = "/Purchase/Index";
+                        }
+                    }
+                })
+            })
+        })
+
+    </script>
+
+
+}
+

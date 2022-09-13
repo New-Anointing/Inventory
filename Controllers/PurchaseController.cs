@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Stock_keeping.Data;
 using Stock_keeping.Models;
 using Stock_keeping.Utility;
+using Stock_keeping.ViewModels;
 using System.Security.Claims;
 
 namespace Stock_keeping.Controllers
@@ -26,7 +27,7 @@ namespace Stock_keeping.Controllers
             return orgId;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> AddNewPurchaseItem()
         {
             //RENDERING CATEGORY PRODUCT AND SUPLIER AS DROPDOWNS INTO VIEW
             ViewData["Supplier"] = new SelectList(await _db.Supplier.Where(x => x.OrgId == GetOrg()).ToListAsync(), "Id", "SupplierName");
@@ -58,33 +59,36 @@ namespace Stock_keeping.Controllers
             });
         }
 
-        [HttpGet]
-        public IActionResult SolveTotalAmount()
+        
+        public IActionResult SolveTotalAmount
         {
-            var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
-            double amount = 0;
-            double? discount = 0;
-            double dicsCost = 0;
-            double? tax = 0;
-            double total = 0;
-            foreach (var stockItem in stock)
+            get
             {
-                amount += stockItem.Amount;
-                discount += stockItem.DiscountPrice;
-                dicsCost += stockItem.DiscountedCost;
-                tax += stockItem.TaxPrice;
-                total += stockItem.Price;
+                var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
+                double amount = 0;
+                double? discount = 0;
+                double dicsCost = 0;
+                double? tax = 0;
+                double total = 0;
+                foreach (var stockItem in stock)
+                {
+                    amount += stockItem.Amount;
+                    discount += stockItem.DiscountPrice;
+                    dicsCost += stockItem.DiscountedCost;
+                    tax += stockItem.TaxPrice;
+                    total += stockItem.Price;
 
-            };
+                };
 
-            return Json(new
-            {
-                amount = amount,
-                discount = discount,
-                dicsCost = dicsCost,
-                tax = tax, 
-                total = total
-            });
+                return Json(new
+                {
+                    amount,
+                    discount,
+                    dicsCost,
+                    tax,
+                    total
+                });
+            }
         }
 
         [HttpPost]
@@ -155,18 +159,30 @@ namespace Stock_keeping.Controllers
             });
         }
 
-        public async Task<IActionResult> PurchaseReport()
+        public async Task<IActionResult> PurchaseReport(PurchaseReportDateFilterVM model)
         {
-            var purchaseReport = await _db.PurchaseReport.Include(p=>p.Supplier).Include(p=>p.Product).Where(p=>p.OrgId == GetOrg()).ToListAsync();
-            ViewBag.purchaseReport = purchaseReport;
-            return View();
+            if(model.StartDate == null && model.EndDate == null)
+            {
+                model.EndDate = DateTime.Now;
+                model.StartDate = DateTime.Now.AddDays(-30);
+            }
+            
+            var purchaseReport = await _db.PurchaseReport.Include(p=>p.Supplier).Include(p=>p.Product).Where(p=>p.OrgId == GetOrg() && p.PurchaseTime >= model.StartDate && p.PurchaseTime <= model.EndDate).OrderBy(p=>p.PurchaseTime).ToListAsync();
+            model.PurchaseReport = purchaseReport;
+            return View(model);
         }
 
-        public async Task<IActionResult> PurchaseSummary()
+        public async Task<IActionResult> PurchaseSummary(PurchaseSummaryDateFilterVM model)
         {
-            var purchaseSummary = await _db.PurchaseSummary.Include(p => p.Supplier).Where(p => p.OrgId == GetOrg()).ToListAsync();
-            ViewBag.purchaseSummary = purchaseSummary;
-            return View();
+            if (model.StartDate == null && model.EndDate == null)
+            {
+                model.EndDate = DateTime.Now;
+                model.StartDate = DateTime.Now.AddDays(-30);
+            }
+
+            var purchaseSummary = await _db.PurchaseSummary.Include(p => p.Supplier).Where(p => p.OrgId == GetOrg() && p.PurchasedDate >= model.StartDate && p.PurchasedDate <= model.EndDate).OrderBy(p=>p.PurchasedDate).ToListAsync();
+            model.PurchaseSummary = purchaseSummary;
+            return View(model);
         }
     }
 }
