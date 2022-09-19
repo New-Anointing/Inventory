@@ -583,8 +583,10 @@
 
             $("#btnEditSave").click(function(event) {
                 var selectedval = $("#editProductName").val();
-                console.log(selectedval);
-                $.ajax({
+                if ($("#editQuantity").val() == 0 || null) {
+                    console.log("add a quantity");
+                }else{
+                    $.ajax({
                     type: "POST",
                     datatype: 'JSON',
                     url: "/Sales/Edit",
@@ -610,6 +612,8 @@
                             alert("error: " + response)
                         }
                 });
+
+                }
 
 
             })
@@ -648,6 +652,48 @@
 
     </script>
 
+        @*FINAL SAVE BUTTON SCRIPT TO SAVE TO THE OTHER PAGES*@
+
+    <script>
+        $("#btnSubmitSave").click(function() {
+
+            var reportData = {
+                PurchaseDate: $('#datePicker').val(),
+                CustomerId: $('#customerInput').val(),
+                TotalCost: backToNumFunc($('#totalCostId').text())
+            }
+
+            if (reportData.TotalCost == 0.00) {
+                alert("add a product to list")
+            } else if (reportData.CustomerId == null) {
+                alert("add a customer")
+            } else if (reportData.PurchaseDate == '') {
+                alert("add a date")
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Sales/CreatingReportAndSummary",
+                    data: reportData,
+                    dataType: "json",
+                    traditional: true,
+                    success: function(r) {
+
+                        if (r.msg == "success") {
+                            window.location.href = "/Sales/SalesSummary";
+                        }
+                    }
+                });
+
+                if ($("#customerInput").length) {
+                    $("#customerInput").val(localStorage.removeItem("customerInput"));
+                }
+                if ($("#datePicker").length) {
+                    $("#datePicker").val(localStorage.removeItem("datePicker"));
+                }
+            }
+
+        })
+    </script>
 
 }
 

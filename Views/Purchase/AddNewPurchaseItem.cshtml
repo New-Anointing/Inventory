@@ -94,22 +94,22 @@
                                             @item.Quantity
                                         </td>
                                         <td>
-                                            @item.Product.CostPrice
+                                            ₦@item.Product.CostPrice
                                         </td>
                                         <td>
-                                            @item.Amount
+                                            ₦@item.Amount
                                         </td>
                                         <td>
-                                            @item.DiscountPrice
+                                            ₦@item.DiscountPrice
                                         </td>
                                         <td>
-                                            @item.DiscountedCost
+                                            ₦@item.DiscountedCost
                                         </td>
                                         <td>
-                                            @item.TaxPrice
+                                            ₦@item.TaxPrice
                                         </td>
                                         <td>
-                                            @item.Price
+                                            ₦@item.Price
                                         </td>
                                         <td style="width:150px">
                                             <div class="btn-group w-75" role="group">
@@ -196,11 +196,11 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Discount(&#8358)</label>
-                            <input class="form-control" disabled type="number" min="0" id="discountPrice" placeholder="DiscountPrice">
+                            <input class="form-control" disabled id="discountPrice" placeholder="DiscountPrice">
                         </div>
                         <div class="form-group mb-3">
                             <label>Cost After Discount(&#8358)</label>
-                            <input class="form-control" disabled type="number" id="priceWithDisc">
+                            <input class="form-control" disabled id="priceWithDisc">
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax%</label>
@@ -208,11 +208,11 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax(&#8358)</label>
-                            <input class="form-control" disabled type="number" min="0" id="taxPrice" placeholder="TaxPrice">
+                            <input class="form-control" disabled  min="0" id="taxPrice" placeholder="TaxPrice">
                         </div>
                         <div class="form-group mb-3">
                             <label>Total(&#8358)</label>
-                            <input disabled class="form-control" id="total" type="number" placeholder="Total">
+                            <input disabled class="form-control" id="total" placeholder="Total">
                         </div>
                     </form>
                 </div>
@@ -264,11 +264,11 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Discount(&#8358)</label>
-                            <input class="form-control" disabled type="number" min="0" id="editDiscountPrice" placeholder="DiscountPrice">
+                            <input class="form-control" disabled min="0" id="editDiscountPrice" placeholder="DiscountPrice">
                         </div>
                         <div class="form-group mb-3">
                             <label>Cost After Discount(&#8358)</label>
-                            <input class="form-control" disabled type="number" id="editPriceWithDisc">
+                            <input class="form-control" disabled id="editPriceWithDisc">
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax%</label>
@@ -276,11 +276,11 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax(&#8358)</label>
-                            <input class="form-control" disabled type="number" min="0" id="editTaxPrice" placeholder="TaxPrice">
+                            <input class="form-control" disabled min="0" id="editTaxPrice" placeholder="TaxPrice">
                         </div>
                         <div class="form-group mb-3">
                             <label>Total(&#8358)</label>
-                            <input disabled class="form-control" id="editTotal" type="number" placeholder="Total">
+                            <input disabled class="form-control" id="editTotal" placeholder="Total">
                         </div>
                     </form>
                 </div>
@@ -317,38 +317,6 @@
 @section Scripts{
 
 
-
-    @*SCRIPT FOR ADDING SLASH FOR DATE*@
-    @*<script>
-
-
-        var date = document.getElementById('datePicker');
-
-        function checkValue(str, max) {
-            if (str.charAt(0) !== '0' || str == '00') {
-            var num = parseInt(str);
-            if (isNaN(num) || num <= 0 || num > max) num = 1;
-            str = num > parseInt(max.toString().charAt(0))
-                    && num.toString().length == 1 ? '0' + num : num.toString();
-            };
-            return str;
-        };
-
-        date.addEventListener('input', function(e) {
-            this.type = 'text';
-            var input = this.value;
-            if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
-            var values = input.split('/').map(function(v) {
-            return v.replace(/\D/g, '')
-            });
-            if (values[0]) values[0] = checkValue(values[0], 12);
-            if (values[1]) values[1] = checkValue(values[1], 31);
-            var output = values.map(function(v, i) {
-            return v.length == 2 && i < 2 ? v + ' / ' : v;
-            });
-            this.value = output.join('').substr(0, 14);
-        });
-    </script>*@
     @*sSTOP INPUTS FROM REFRESHING*@
     <script>
         $("#supplierInput").on('change', function() {
@@ -374,13 +342,30 @@
     @*SCRIPT FOR PRICES AND GETTING PRODUCTS FOR CREATION*@
     <script>
 
+        //Script for currency conversion
+        let currencyFunc = (x) => {
+
+            const CurrencyChanger = new Intl.NumberFormat('en-NG',
+                { style: 'currency', currency: 'NGN' }
+            ).format(x);
+            return (CurrencyChanger);
+        }
+        let backToNumFunc = (x) => {
+            const CurToString = x.replace(/₦/, '').replace(/,/, '');
+            const StrToNum = parseFloat(CurToString)
+            return (StrToNum);
+        }
+
         $("#productName").change(function() {
             var selectedVal = $(this).val();
             var tax = $("#tax").val(0);
             $("#taxPrice").val(0);
             var discount = $("#discount").val(0);
             $("#discountPrice").val(0);
-            $("quantity").val(0);
+            $("#quantity").val(0);
+            $("#amount").val(0);
+            $("#priceWithDisc").val(0);
+            $("#total").val(0);
 
 
             $.ajax({
@@ -391,10 +376,10 @@
                 success:
                     function(response) {
                         var product = response.data;
-                        console.log($("#categoryName"))
 
                         $("#categoryName").val(product.category.name);
-                        $("#unitCost").val(product.costPrice);
+                        var cp = currencyFunc(product.costPrice);
+                        $("#unitCost").val(cp);
 
                     },
                 error:
@@ -406,14 +391,14 @@
         //EDIT PRICE WHEN QUANTITY CHANGE
         $("#quantity").change(function() {
             var productQuantity = $("#quantity").val();
-            var unitCost = $("#unitCost").val();
+            var unitCost = backToNumFunc($("#unitCost").val());
             var amount = $("#amount");
             var totalPrice = $("#total");
             var tax = $("#tax").val(0);
             var discount = $("#discount").val(0);
             $("#taxPrice").val(0);
             $("#discountPrice").val(0);
-            pSum = productQuantity * unitCost;
+            pSum = currencyFunc(productQuantity * unitCost);
 
             $("#priceWithDisc").val(pSum);
             amount.val(pSum);
@@ -426,18 +411,19 @@
         ////EDIT TOTAL WHEN DISCOUNT AND TAX CHANGES
         $("#discount, #tax").change(function() {
             var discount = $('#discount').val();
-            var amount = parseFloat($("#amount").val());
+            var amount = backToNumFunc($("#amount").val());
             var tax = $("#tax").val();
             caldisc = (amount * discount) / 100;
             var calcPWithDisc = (amount - caldisc);
-            $("#priceWithDisc").val(calcPWithDisc.toFixed(2));
-            $("#total").val(calcPWithDisc.toFixed(2));
-            var pWithDisc = parseFloat($("#priceWithDisc").val());
+            $("#priceWithDisc").val(currencyFunc(calcPWithDisc));
+            $("#total").val(currencyFunc(calcPWithDisc));
+            var pWithDisc = $("#priceWithDisc").val();
+            pWithDisc = backToNumFunc(pWithDisc);
             caltax = (pWithDisc * tax) / 100;
             $("#taxPrice").val(caltax.toFixed(2));
-            $("#discountPrice").val(caldisc.toFixed(2));
-            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax)).toFixed(2);
-            $("#total").val(totalPrice);
+            $("#discountPrice").val(currencyFunc(caldisc));
+            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax));
+            $("#total").val(currencyFunc(totalPrice));
         })
 
         //GETTING ALL TOTAL FORM THE CONTROLLER
@@ -447,12 +433,13 @@
                 dataType: "JSON",
                 url: "/Purchase/SolveTotalAmount",
                 success: function(res) {
-                    $("#amountId").text(res.amount.toFixed(2));
-                    $("#discId").text(res.discount.toFixed(2));
-                    $("#dicCostId").text(res.dicsCost.toFixed(2));
-                    $("#taxId").text(res.tax.toFixed(2));
-                    $("#totalCostId").text(res.total.toFixed(2))
+                    $("#amountId").text(currencyFunc(res.amount));
+                    $("#discId").text(currencyFunc(res.discount));
+                    $("#dicCostId").text(currencyFunc(res.dicsCost));
+                    $("#taxId").text(currencyFunc(res.tax));
+                    $("#totalCostId").text(currencyFunc(res.total));
                 }
+                
 
             })
         })
@@ -489,7 +476,7 @@
                         console.log($("#editCategoryName"))
 
                         $("#editCategoryName").val(product.category.name);
-                        $("#editUnitCost").val(product.costPrice);
+                        $("#editUnitCost").val(currencyFunc(product.costPrice));
 
                     },
                 error:
@@ -501,14 +488,14 @@
         //EDIT PRICE WHEN QUANTITY CHANGE
         $("#editQuantity").change(function() {
             var productQuantity = $("#editQuantity").val();
-            var unitCost = $("#editUnitCost").val();
+            var unitCost = backToNumFunc($("#editUnitCost").val());
             var amount = $("#editAmount");
             var totalPrice = $("#editTotal");
             var tax = $("#editTax").val(0);
             var discount = $("#editDiscount").val(0);
             $("#editTaxPrice").val(0);
             $("#editDiscountPrice").val(0);
-            pSum = productQuantity * unitCost;
+            pSum = currencyFunc((productQuantity * unitCost));
 
             $("#editPriceWithDisc").val(pSum);
             amount.val(pSum);
@@ -521,18 +508,19 @@
         ////EDIT TOTAL WHEN DISCOUNT CHANGES
         $("#editDiscount, #editTax").change(function() {
             var discount = $('#editDiscount').val();
-            var amount = parseFloat($("#editAmount").val());
+            var amount = backToNumFunc($("#editAmount").val());
             var tax = $("#editTax").val();
             caldisc = (amount * discount) / 100;
             var calcPWithDisc = (amount - caldisc);
-            $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
-            $("#editTotal").val(calcPWithDisc.toFixed(2));
-            $("#editDiscountPrice").val(caldisc.toFixed(2));
-            var pWithDisc = parseFloat($("#editPriceWithDisc").val());
+            $("#editPriceWithDisc").val(currencyFunc(calcPWithDisc));
+            $("#editTotal").val(currencyFunc(calcPWithDisc));
+            $("#editDiscountPrice").val(currencyFunc(caldisc));
+            var pWithDisc = $("#editPriceWithDisc").val();
+            pWithDisc = backToNumFunc(pWithDisc);
             caltax = (pWithDisc * tax) / 100;
-            $("#editTaxPrice").val(caltax.toFixed(2));
-            var totalPrice = (pWithDisc + parseFloat(caltax))
-            $("#editTotal").val(totalPrice.toFixed(2));
+            $("#editTaxPrice").val(currencyFunc(caltax));
+            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax));
+            $("#editTotal").val(currencyFunc(totalPrice));
         })
 
     </script>
@@ -570,14 +558,17 @@
                                     ProductId: selectedVal,
                                     CategoryId: product.categoryId,
                                     Quantity: stockFormData.quantity.value,
-                                    Amount: stockFormData.amount.value,
-                                    DiscountPrice: stockFormData.discountPrice.value,
-                                    DiscountedCost: stockFormData.priceWithDisc.value,
-                                    TaxPrice: stockFormData.taxPrice.value,
-                                    Price: stockFormData.total.value
+                                    Amount: backToNumFunc(stockFormData.amount.value),
+                                    DiscountPrice: backToNumFunc(stockFormData.discountPrice.value),
+                                    DiscountedCost: backToNumFunc(stockFormData.priceWithDisc.value),
+                                    TaxPrice: backToNumFunc(stockFormData.taxPrice.value),
+                                    Price: backToNumFunc(stockFormData.total.value)
                                 }
+                                if(purchaseData.Quantity == 0 || null){
+                                    console.log("add a quantity")
+                                }else{
 
-                                $.ajax({
+                                    $.ajax({
                                     type: "POST",
                                     url: "/Purchase/Create",
                                     //data: JSON.stringify(PostCustomer),
@@ -592,6 +583,8 @@
                                         }
                                     }
                                 })
+                                }
+
 
                             },
                         error:
@@ -629,12 +622,12 @@
             $("#editCategoryName").val(Category);
             var productName = $("#editProductName");
             $('#editQuantity').val(Quantity);
-            $('#editUnitCost').val(UnitPrice);
-            $('#editAmount').val(Amount);
-            $('#editDiscountPrice').val(Discount);
-            $('#editPriceWithDisc').val(DiscountedCost);
-            $('#editTaxPrice').val(Tax);
-            $("#editTotal").val(Price);
+            $('#editUnitCost').val(currencyFunc(UnitPrice));
+            $('#editAmount').val(currencyFunc(Amount));
+            $('#editDiscountPrice').val(currencyFunc(Discount));
+            $('#editPriceWithDisc').val(currencyFunc(DiscountedCost));
+            $('#editTaxPrice').val(currencyFunc(Tax));
+            $("#editTotal").val(currencyFunc(Price));
 
             const keys = Object.keys(productName);
             productName[keys[0]].value = Product;
@@ -661,11 +654,11 @@
                                     ProductId: selectedVal,
                                     CategoryId: stock.categoryId,
                                     Quantity: $('#editQuantity').val(),
-                                    Amount: $('#editAmount').val(),
-                                    DiscountPrice: $('#editDiscountPrice').val(),
-                                    DiscountedCost: $('#editPriceWithDisc').val(),
-                                    TaxPrice: $('#editTaxPrice').val(),
-                                    Price: $("#editTotal").val()
+                                    Amount: backToNumFunc($('#editAmount').val()),
+                                    DiscountPrice: backToNumFunc($('#editDiscountPrice').val()),
+                                    DiscountedCost: backToNumFunc($('#editPriceWithDisc').val()),
+                                    TaxPrice: backToNumFunc($('#editTaxPrice').val()),
+                                    Price: backToNumFunc($("#editTotal").val()) 
                                 }
 
                                 $.ajax({
@@ -738,7 +731,7 @@
             var reportData = {
                 PurchaseDate: $('#datePicker').val(),
                 SupplierId: $('#supplierInput').val(),
-                TotalCost: $('#totalCostId').text()
+                TotalCost: backToNumFunc($('#totalCostId').text())
             }
 
             if (reportData.TotalCost == 0.00) {

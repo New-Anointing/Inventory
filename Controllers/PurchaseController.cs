@@ -40,7 +40,7 @@ namespace Stock_keeping.Controllers
         [HttpGet]
         public IActionResult GetProductUsingSelectedProduct(int productId)
         {
-            var product = _db.Product.Where(p=>p.Id == productId).Include(p=>p.Category).FirstOrDefault();
+            var product = _db.Product.Where(p => p.Id == productId).Include(p => p.Category).FirstOrDefault();
             return Json(new
             {
                 data = product
@@ -59,36 +59,33 @@ namespace Stock_keeping.Controllers
             });
         }
 
-        
-        public IActionResult SolveTotalAmount
+        [HttpGet]
+        public IActionResult SolveTotalAmount()
         {
-            get
+            var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
+            double amount = 0;
+            double? discount = 0;
+            double dicsCost = 0;
+            double? tax = 0;
+            double total = 0;
+            foreach (var stockItem in stock)
             {
-                var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
-                double amount = 0;
-                double? discount = 0;
-                double dicsCost = 0;
-                double? tax = 0;
-                double total = 0;
-                foreach (var stockItem in stock)
-                {
-                    amount += stockItem.Amount;
-                    discount += stockItem.DiscountPrice;
-                    dicsCost += stockItem.DiscountedCost;
-                    tax += stockItem.TaxPrice;
-                    total += stockItem.Price;
+                amount += stockItem.Amount;
+                discount += stockItem.DiscountPrice;
+                dicsCost += stockItem.DiscountedCost;
+                tax += stockItem.TaxPrice;
+                total += stockItem.Price;
 
-                };
+            };
 
-                return Json(new
-                {
-                    amount,
-                    discount,
-                    dicsCost,
-                    tax,
-                    total
-                });
-            }
+            return Json(new
+            {
+                amount,
+                discount,
+                dicsCost,
+                tax,
+                total
+            });
         }
 
         [HttpPost]
@@ -122,7 +119,7 @@ namespace Stock_keeping.Controllers
         public async Task<IActionResult> CreatingReportAndSummary(PurchaceReportObj reportObj)
         {
             var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
-            foreach(var stockItem in stock)
+            foreach (var stockItem in stock)
             {
                 var PurReport = new PurchaseReport()
                 {
@@ -134,6 +131,14 @@ namespace Stock_keeping.Controllers
                     OrgId = stockItem.OrgId
                 };
 
+                var inventory = await _db.StockList.Where(s => s.OrgId == GetOrg()).ToListAsync();
+                foreach (var item in inventory)
+                {
+                    if (item.ProductId == stockItem.ProductId)
+                    {
+                        item.Quantity +=stockItem.Quantity;
+                    }
+                };
                 _db.PurchaseReport.Add(PurReport);
                 await _db.SaveChangesAsync();
             }
@@ -152,6 +157,7 @@ namespace Stock_keeping.Controllers
             await _db.SaveChangesAsync();
 
             _db.PurchaseList.RemoveRange(stock);
+
             await _db.SaveChangesAsync();
             return Json(new
             {
@@ -161,13 +167,13 @@ namespace Stock_keeping.Controllers
 
         public async Task<IActionResult> PurchaseReport(PurchaseReportDateFilterVM model)
         {
-            if(model.StartDate == null && model.EndDate == null)
+            if (model.StartDate == null && model.EndDate == null)
             {
                 model.EndDate = DateTime.Now;
                 model.StartDate = DateTime.Now.AddDays(-30);
             }
-            
-            var purchaseReport = await _db.PurchaseReport.Include(p=>p.Supplier).Include(p=>p.Product).Where(p=>p.OrgId == GetOrg() && p.PurchaseTime >= model.StartDate && p.PurchaseTime <= model.EndDate).OrderBy(p=>p.PurchaseTime).ToListAsync();
+
+            var purchaseReport = await _db.PurchaseReport.Include(p => p.Supplier).Include(p => p.Product).Where(p => p.OrgId == GetOrg() && p.PurchaseTime >= model.StartDate && p.PurchaseTime <= model.EndDate).OrderBy(p => p.PurchaseTime).ToListAsync();
             model.PurchaseReport = purchaseReport;
             return View(model);
         }
@@ -180,7 +186,7 @@ namespace Stock_keeping.Controllers
                 model.StartDate = DateTime.Now.AddDays(-30);
             }
 
-            var purchaseSummary = await _db.PurchaseSummary.Include(p => p.Supplier).Where(p => p.OrgId == GetOrg() && p.PurchasedDate >= model.StartDate && p.PurchasedDate <= model.EndDate).OrderBy(p=>p.PurchasedDate).ToListAsync();
+            var purchaseSummary = await _db.PurchaseSummary.Include(p => p.Supplier).Where(p => p.OrgId == GetOrg() && p.PurchasedDate >= model.StartDate && p.PurchasedDate <= model.EndDate).OrderBy(p => p.PurchasedDate).ToListAsync();
             model.PurchaseSummary = purchaseSummary;
             return View(model);
         }

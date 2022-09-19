@@ -1,7 +1,7 @@
-﻿@model Stock_keeping.ViewModels.PurchaseSummaryDateFilterVM
+﻿@model Stock_keeping.ViewModels.SalesSummaryDateFilterVM
 
 @{
-    ViewData["Title"] = "PurchaseSummary";
+    ViewData["Title"] = "SalesSummary";
 }
 
 <div class="container-fluid">
@@ -16,7 +16,7 @@
                         <li class="breadcrumb-item active">Editable</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Purchase</h4>
+                <h4 class="page-title">Sales</h4>
             </div>
             <!--end page-title-box-->
         </div>
@@ -27,7 +27,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Purchase </h4>
+                    <h4 class="card-title">Sales </h4>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -59,14 +59,14 @@
                                         Cost(&#8358)
                                     </th>
                                 </tr>
-                                @foreach (var item in Model.PurchaseSummary)
+                                @foreach (var item in Model.SalesSummaries)
                                 {
                                     <tr>
                                         <td>
                                             @item.PurchasedDate.ToString("MM/dd/yyyy")
                                         </td>
                                         <td>
-                                            @item.Supplier.SupplierName
+                                            @item.Customer.CustomerName
                                         </td>
                                         <td>
                                             @item.TotalCost
@@ -83,4 +83,6 @@
     </div> <!-- end row -->
     <!--creat form modal-->
 </div>
+
+
 

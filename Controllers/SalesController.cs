@@ -91,6 +91,14 @@ namespace Stock_keeping.Controllers
                     TotalCost = stockItem.Price,
                     OrgId = stockItem.OrgId
                 };
+                var inventory = await _db.StockList.Where(s => s.OrgId == GetOrg()).ToListAsync();
+                foreach (var item in inventory)
+                {
+                    if (item.ProductId == stockItem.ProductId)
+                    {
+                        item.Quantity -=stockItem.Quantity;
+                    }
+                };
 
                 _db.SalesReport.Add(SalesReport);
                 await _db.SaveChangesAsync();
@@ -138,11 +146,11 @@ namespace Stock_keeping.Controllers
 
             return Json(new
             {
-                amount = Math.Round(amount,2),
-                discount = Math.Round((decimal)discount, 2),
-                dicsCost = Math.Round(dicsCost, 2),
-                tax = Math.Round((decimal)tax,2),
-                total = Math.Round(total, 2)
+                amount,
+                discount,
+                dicsCost,
+                tax,
+                total
             });
         }
 

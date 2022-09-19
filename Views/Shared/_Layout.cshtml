@@ -88,7 +88,7 @@
                                         </ul><!--end nav-->
                                     </div><!--end sidebarCrypto-->
                                 </li><!--end nav-item-->
-                                    <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" href="#sales" data-bs-toggle="collapse" role="button"
                                         aria-expanded="false">
                                         SALES
@@ -96,10 +96,23 @@
                                     <div class="collapse " id="sales">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" asp-controller="Sales" asp-action="AddSoldItems" >SalesReport</a>
+                                                <a class="nav-link" asp-controller="Sales" asp-action="SalesReport" >SalesReport</a>
                                             </li><!--end nav-item-->
                                             <li class="nav-item">
                                                 <a class="nav-link" asp-controller="Sales" asp-action="SalesSummary" >SalesSummary</a>
+                                            </li><!--end nav-item-->
+                                        </ul><!--end nav-->
+                                    </div><!--end sidebarCrypto-->
+                                </li><!--end nav-item-->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#inventory" data-bs-toggle="collapse" role="button"
+                                        aria-expanded="false">
+                                        INVENTORY
+                                    </a>
+                                    <div class="collapse " id="inventory">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-controller="Inventory" asp-action="StockList" >Stock</a>
                                             </li><!--end nav-item-->
                                         </ul><!--end nav-->
                                     </div><!--end sidebarCrypto-->

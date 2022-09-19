@@ -1,7 +1,7 @@
-﻿@model Stock_keeping.ViewModels.PurchaseSummaryDateFilterVM
+﻿@model Stock_keeping.Models.StockList
 
 @{
-    ViewData["Title"] = "PurchaseSummary";
+    ViewData["Title"] = "Inventory";
 }
 
 <div class="container-fluid">
@@ -16,7 +16,7 @@
                         <li class="breadcrumb-item active">Editable</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Purchase</h4>
+                <h4 class="page-title">Inventory</h4>
             </div>
             <!--end page-title-box-->
         </div>
@@ -27,49 +27,28 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Purchase </h4>
+                    <h4 class="card-title">Inventory </h4>
                 </div><!--end card-header-->
                 <div class="card-body">
                     <div class="table-responsive">
-                       <div class="date-div mb-4 w-25">
-                            <form>
-                                <h5>Stort List</h5>
-                                <span>Select Start Date</span>
-                                <input class="form-control mb-2" asp-for="StartDate" type="date" id="datePicker"/>
-                                <span>Select End Date</span>
-                                <input class="form-control mb-2" asp-for="EndDate" type="date" id="datePicker"/>
-                                <button class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" type="submit">Submit</button>
-                            </form>
-                        </div>
-
-                        <div class="mb-2">
-                            <a class="btn btn-outline-primary btn-sm mb-1 mb-xl-0" asp-controller="Purchase" asp-action="PurchaseReport">Purchase Report</a>
-                        </div>
                         <div class="table-div">
                             <table class="table table-bordered">
                                 <tr class="bg-primary">
                                     <th style="color:white;">
-                                        Date
+                                        Product
                                     </th>
                                     <th style="color:white;">
-                                        Supplier
-                                    </th>
-
-                                    <th style="color:white;">
-                                        Cost(&#8358)
+                                        Quantity
                                     </th>
                                 </tr>
-                                @foreach (var item in Model.PurchaseSummary)
+                                @foreach (var item in ViewBag.StockList)
                                 {
                                     <tr>
                                         <td>
-                                            @item.PurchasedDate.ToString("MM/dd/yyyy")
+                                            @item.Product.Name
                                         </td>
                                         <td>
-                                            @item.Supplier.SupplierName
-                                        </td>
-                                        <td>
-                                            @item.TotalCost
+                                            @item.Quantity
                                         </td>
 
                                     </tr>
