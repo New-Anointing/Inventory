@@ -119,7 +119,7 @@ namespace Stock_keeping.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatingReportAndSummary(ReportObj reportObj)
+        public async Task<IActionResult> CreatingReportAndSummary(PurchaceReportObj reportObj)
         {
             var stock = _db.PurchaseList.Where(p => p.OrgId == GetOrg()).ToList();
             foreach(var stockItem in stock)

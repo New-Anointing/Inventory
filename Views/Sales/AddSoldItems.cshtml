@@ -104,10 +104,10 @@
                                         </td>
                                         <td style="width:150px">
                                             <div class="btn-group w-75" role="group">
-                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#stockEditModal" title="Update Stock" selectedProduct="@item.Product.Id" selectedId="@item.Id" selectedQuantity="@item.Quantity" selectedUnitP="@item.Product.CostPrice" selectedAmount="@item.Amount" selectedDiscount="@item.DiscountPrice" selectedDiscountedC="@item.DiscountedCost" selectedTax="@item.TaxPrice" selectedPrice="@item.Price">
+                                                <button class="btn btn-primary text-white mx-2" id="btnEdit" data-bs-toggle="modal" data-bs-target="#salesEditModal" title="Update sales" selectedProduct="@item.Product.Id" selectedId="@item.Id" selectedQuantity="@item.Quantity" selectedUnitP="@item.Product.SellingPrice" selectedAmount="@item.Amount" selectedDiscount="@item.DiscountPrice" selectedDiscountedC="@item.DiscountedCost" selectedTax="@item.TaxPrice" selectedPrice="@item.Price">
                                                     <i class="bi bi-pencil-square"></i>Edit
                                                 </button>
-                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Branch" selectedId="@item.Id">
+                                                <button class="btn btn-danger text-white mx-2" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete Item" selectedId="@item.Id">
                                                     <i class="bi bi-trash"></i>Delete
                                                 </button>
                                             </div>
@@ -153,7 +153,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Purchased Item</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Sold Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -213,11 +213,11 @@
 
     <!-- Edit modal -->
     <!-- Modal -->
-    <div class="modal fade" id="stockEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="salesEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Purchased Item</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Sold Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -231,7 +231,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Quantity</label>
-                            <input class="form-control" min="1" id="editQuantity" />
+                            <input class="form-control" type="number" min="1" id="editQuantity" />
                         </div>
                         <div class="form-group mb-3">
                             <label>Unit Cost(&#8358)</label>
@@ -243,7 +243,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Discount%</label>
-                            <input class="form-control" min="0" id="editDiscount" placeholder="Discount in %">
+                            <input class="form-control" type="number" min="0" id="editDiscount" placeholder="Discount in %">
                         </div>
                         <div class="form-group mb-3">
                             <label>Discount(&#8358)</label>
@@ -255,7 +255,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax%</label>
-                            <input class="form-control" min="0" id="editTax" placeholder="Tax in %">
+                            <input class="form-control" min="0" type="number" id="editTax" placeholder="Tax in %">
                         </div>
                         <div class="form-group mb-3">
                             <label>Tax(&#8358)</label>
@@ -340,7 +340,7 @@
         $("#productName").change(function() {
             var selectedVal = $(this).val();
             var tax = $("#tax").val(0);
-            $("#taxPrice").val(0); currencyFunc
+            $("#taxPrice").val(0);
             var discount = $("#discount").val(0);
             $("#discountPrice").val(0);
             $("#quantity").val(0);
@@ -429,7 +429,7 @@
         @*///////////////////////////////////////////////////////////*@
         @*///////////////////////////////////////////////////////////*@
 
-
+        //EDIT FUNCTIONS
 
 
             $("#editProductName").change(function() {
@@ -448,10 +448,7 @@
                     success:
                         function(response) {
                             var product = response.data;
-                            console.log($("#editCategoryName"))
-
-                            $("#editCategoryName").val(product.category.name);
-                            $("#editUnitCost").val(product.costPrice);
+                            $("#editUnitCost").val(currencyFunc(product.costPrice));
 
                         },
                     error:
@@ -463,14 +460,14 @@
         //EDIT PRICE WHEN QUANTITY CHANGE
         $("#editQuantity").change(function() {
             var productQuantity = $("#editQuantity").val();
-            var unitCost = $("#editUnitCost").val();
+            var unitCost = backToNumFunc($("#editUnitCost").val());
             var amount = $("#editAmount");
             var totalPrice = $("#editTotal");
             var tax = $("#editTax").val(0);
             var discount = $("#editDiscount").val(0);
             $("#editTaxPrice").val(0);
             $("#editDiscountPrice").val(0);
-            pSum = productQuantity * unitCost;
+            pSum = currencyFunc((productQuantity * unitCost));
 
             $("#editPriceWithDisc").val(pSum);
             amount.val(pSum);
@@ -483,18 +480,19 @@
         ////EDIT TOTAL WHEN DISCOUNT CHANGES
         $("#editDiscount, #editTax").change(function() {
             var discount = $('#editDiscount').val();
-            var amount = parseFloat($("#editAmount").val());
+            var amount = backToNumFunc($("#editAmount").val());
             var tax = $("#editTax").val();
             caldisc = (amount * discount) / 100;
             var calcPWithDisc = (amount - caldisc);
-            $("#editPriceWithDisc").val(calcPWithDisc.toFixed(2));
-            $("#editTotal").val(calcPWithDisc.toFixed(2));
-            $("#editDiscountPrice").val(caldisc.toFixed(2));
-            var pWithDisc = parseFloat($("#editPriceWithDisc").val());
+            $("#editPriceWithDisc").val(currencyFunc(calcPWithDisc));
+            $("#editTotal").val(currencyFunc(calcPWithDisc));
+            $("#editDiscountPrice").val(currencyFunc(caldisc));
+            var pWithDisc = $("#editPriceWithDisc").val();
+            pWithDisc = backToNumFunc(pWithDisc);
             caltax = (pWithDisc * tax) / 100;
-            $("#editTaxPrice").val(caltax.toFixed(2));
-            var totalPrice = (pWithDisc + parseFloat(caltax))
-            $("#editTotal").val(totalPrice.toFixed(2));
+            $("#editTaxPrice").val(currencyFunc(caltax));
+            var totalPrice = parseFloat(pWithDisc + parseFloat(caltax));
+            $("#editTotal").val(currencyFunc(totalPrice));
         })
 
 
@@ -512,7 +510,7 @@
 
 
 
-            //ADDING CREATED STOCK TO LIST SCRIPTS
+            //ADDING CREATED ITEMS TO LIST SCRIPTS
             $(document).ready(function() {
                 $("#btnSave").click(function(event) {
                     var selectedVal = $("#productName").val();
@@ -559,69 +557,52 @@
 
         //SCRIPT FOR SAVING EDITED ITEM
         //EDIT STOCK ITEM SCRIPTS
-        $(document).delegate("#btnedit", "click", function(e) {
-            product = $(this).attr('selectedproduct');
-            unitprice = $(this).attr('selectedunitp');
-            quantity = $(this).attr('selectedquantity');
-            amount = $(this).attr('selectedamount');
-            discount = $(this).attr('selecteddiscount');
-            discountedcost = $(this).attr('selecteddiscountedc');
-            tax = $(this).attr('selectedtax');
-            price = $(this).attr('selectedprice');
-            id = $(this).attr('selectedid');
+        $(document).delegate("#btnEdit", "click", function(e) {
+            product = $(this).attr('selectedProduct');
+            unitprice = $(this).attr('selectedUnitP');
+            quantity = $(this).attr('selectedQuantity');
+            amount = $(this).attr('selectedAmount');
+            discount = $(this).attr('selectedDiscount');
+            discountedcost = $(this).attr('selectedDiscountedC');
+            tax = $(this).attr('selectedTax');
+            price = $(this).attr('selectedPrice');
+            id = $(this).attr('selectedId');
 
 
-            $("#editcategoryname").val(category);
-            var productname = $("#editproductname");
-            $('#editquantity').val(quantity);
-            $('#editunitcost').val(unitprice);
-            $('#editamount').val(amount);
-            $('#editdiscountprice').val(discount);
-            $('#editpricewithdisc').val(discountedcost);
-            $('#edittaxprice').val(tax);
-            $("#edittotal").val(price);
+            var productName = $("#editProductName");
+            $('#editQuantity').val(quantity);
+            $('#editUnitCost').val(currencyFunc(unitprice));
+            $('#editAmount').val(currencyFunc(amount));
+            $('#editDiscountPrice').val(currencyFunc(discount));
+            $('#editPriceWithDisc').val(currencyFunc(discountedcost));
+            $('#editTaxPrice').val(currencyFunc(tax));
+            $("#editTotal").val(currencyFunc(price));
 
-            const keys = object.keys(productname);
-            productname[keys[0]].value = product;
+            const keys = Object.keys(productName);
+            productName[keys[0]].value = product;
 
-            $("#btneditsave").click(function(event) {
-                var selectedval = $("#editproductname").val();
-                console.log(selectedval)
-                event.preventdefault();
+            $("#btnEditSave").click(function(event) {
+                var selectedval = $("#editProductName").val();
+                console.log(selectedval);
                 $.ajax({
-                    type: "get",
-                    datatype: 'json',
-                    url: "/purchase/getproductusingselectedproduct",
-                    data: { productid: selectedval },
+                    type: "POST",
+                    datatype: 'JSON',
+                    url: "/Sales/Edit",
+                    data: {
+                            Id: id,
+                            ProductId: selectedval,
+                            Quantity: $('#editQuantity').val(),
+                            Amount: backToNumFunc($('#editAmount').val()),
+                            DiscountPrice: backToNumFunc($('#editDiscountPrice').val()),
+                            DiscountedCost: backToNumFunc($('#editPriceWithDisc').val()),
+                            TaxPrice: backToNumFunc($('#editTaxPrice').val()),
+                            Price: backToNumFunc($("#editTotal").val()) 
+                    },
                     success:
                         function(response) {
-                            var stock = response.data;
-                            var stockdata = {
-                                id: id,
-                                productid: selectedval,
-                                categoryid: stock.categoryid,
-                                quantity: $('#editquantity').val(),
-                                amount: $('#editamount').val(),
-                                discountprice: $('#editdiscountprice').val(),
-                                discountedcost: $('#editpricewithdisc').val(),
-                                taxprice: $('#edittaxprice').val(),
-                                price: $("#edittotal").val()
+                            if (response.msg == "success") {
+                                window.location.href = "/Sales/AddSoldItems";
                             }
-
-                            $.ajax({
-                                type: "post",
-                                url: "/purchase/edit",
-                                data: stockdata,
-                                datatype: "json",
-                                //contenttype: 'application/json; charset=utf-8',
-                                traditional: true,
-                                success: function(r) {
-
-                                    if (r.msg == "success") {
-                                        window.location.href = "/purchase/index";
-                                    }
-                                }
-                            })
 
                         },
                     error:
@@ -643,24 +624,22 @@
         //DELETE STOCK ITEM SCRIPTS
         $(document).delegate("#btnDelete", "click", function(e) {
             Id = $(this).attr('selectedId');
-            console.log(Id)
             $("#btnDeleteSave").click(function(event) {
                 event.preventDefault();
 
-                var purchaseDataId = {
+                var salesDataId = {
                     Id: parseInt(Id),
                 }
-                console.log(purchaseDataId)
                 $.ajax({
                     type: "DELETE",
-                    url: "/Purchase/Delete",
-                    data: purchaseDataId,
+                    url: "/Sales/Delete",
+                    data: salesDataId,
                     dataType: "json",
                     traditional: true,
                     success: function(r) {
 
                         if (r.msg == "success") {
-                            window.location.href = "/Purchase/Index";
+                            window.location.href = "/Sales/AddSoldItems";
                         }
                     }
                 })

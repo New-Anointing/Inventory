@@ -1,6 +1,6 @@
 ﻿namespace Stock_keeping.Utility
 {
-    public class ReportObj
+    public class PurchaceReportObj
     {
         public string PurchaseDate { get; set; }
 

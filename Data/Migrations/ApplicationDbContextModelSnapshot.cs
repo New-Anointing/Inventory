@@ -252,7 +252,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branch");
+                    b.ToTable("Branch", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.Category", b =>
@@ -277,7 +277,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.Customer", b =>
@@ -326,7 +326,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customer", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.Organization", b =>
@@ -344,7 +344,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organization");
+                    b.ToTable("Organization", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.Product", b =>
@@ -383,7 +383,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.PurchaseList", b =>
@@ -428,7 +428,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("PurchaseList");
+                    b.ToTable("PurchaseList", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.PurchaseReport", b =>
@@ -464,7 +464,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseReport");
+                    b.ToTable("PurchaseReport", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.PurchaseSummary", b =>
@@ -492,7 +492,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseSummary");
+                    b.ToTable("PurchaseSummary", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.SalesList", b =>
@@ -532,7 +532,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("SalesList");
+                    b.ToTable("SalesList", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.Supplier", b =>
@@ -581,7 +581,7 @@ namespace Stock_keeping.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Supplier");
+                    b.ToTable("Supplier", (string)null);
                 });
 
             modelBuilder.Entity("Stock_keeping.Models.ApplicationUser", b =>
