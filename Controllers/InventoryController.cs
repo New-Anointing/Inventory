@@ -22,7 +22,7 @@ namespace Stock_keeping.Controllers
             return orgId;
         }
 
-        public async Task<IActionResult> StockList()
+        public async Task<IActionResult> StockList()    
         {
             var StockList = await _db.StockList.Include(p => p.Product).Where(p => p.OrgId == GetOrg()).ToListAsync();
             ViewBag.StockList = StockList;
