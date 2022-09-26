@@ -175,15 +175,6 @@ namespace Stock_keeping.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    //ROLES CREATION
-                    if (!await _roleManager.RoleExistsAsync(SD.ManagerUser))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.ManagerUser));
-                    }
-                    if(!await _roleManager.RoleExistsAsync(SD.SalesOfficerUser))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.SalesOfficerUser));
-                    }
 
                     //ASSIGNING ADMIN ROLE
                     await _userManager.AddToRoleAsync(user, SD.ManagerUser);

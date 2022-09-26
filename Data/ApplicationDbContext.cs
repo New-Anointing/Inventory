@@ -13,7 +13,6 @@ namespace Stock_keeping.Data
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }
-        public DbSet<Product> ProductNew { get; set; }
         public DbSet<Branch> Branch { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
