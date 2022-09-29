@@ -85,7 +85,7 @@
                                             @item.Quantity
                                         </td>
                                         <td>
-                                            ₦@item.Product.CostPrice
+                                            ₦@item.Product.SellingPrice
                                         </td>
                                         <td>
                                             ₦@item.Amount
@@ -357,8 +357,8 @@
                 success:
                     function(response) {
                         var product = response.data;
-                        var cp = currencyFunc(product.costPrice);
-                        $("#unitCost").val(cp);
+                        var sp = currencyFunc(product.sellingPrice);
+                        $("#unitCost").val(sp);
 
                     },
                 error:
@@ -656,9 +656,9 @@
 
     <script>
         $("#btnSubmitSave").click(function() {
-
+            console.log($('#salesDatePicker'))
             var reportData = {
-                PurchaseDate: $('#datePicker').val(),
+                PurchaseDate: $('#salesDatePicker').val(),
                 CustomerId: $('#customerInput').val(),
                 TotalCost: backToNumFunc($('#totalCostId').text())
             }
@@ -687,8 +687,8 @@
                 if ($("#customerInput").length) {
                     $("#customerInput").val(localStorage.removeItem("customerInput"));
                 }
-                if ($("#datePicker").length) {
-                    $("#datePicker").val(localStorage.removeItem("datePicker"));
+                if ($("#salesDatePicker").length) {
+                    $("#salesDatePicker").val(localStorage.removeItem("salesDatePicker"));
                 }
             }
 

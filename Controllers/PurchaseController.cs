@@ -133,10 +133,11 @@ namespace Stock_keeping.Controllers
 
                 var inventory = await _db.StockList.Where(s => s.OrgId == GetOrg()).ToListAsync();
                 foreach (var item in inventory)
-                {
+                {   
                     if (item.ProductId == stockItem.ProductId)
                     {
-                        item.Quantity +=stockItem.Quantity;
+                        item.Purchased += stockItem.Quantity;
+                        item.Quantity = item.Purchased - item.Sold;
                     }
                 };
                 _db.PurchaseReport.Add(PurReport);

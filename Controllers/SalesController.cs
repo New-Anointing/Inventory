@@ -96,7 +96,10 @@ namespace Stock_keeping.Controllers
                 {
                     if (item.ProductId == stockItem.ProductId)
                     {
-                        item.Quantity -=stockItem.Quantity;
+                        item.Sold +=stockItem.Quantity;
+                        item.Quantity = item.Purchased -item.Sold;
+                        
+                        
                     }
                 };
 

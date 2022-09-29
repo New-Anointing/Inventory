@@ -38,7 +38,13 @@
                                         Product
                                     </th>
                                     <th style="color:white;">
-                                        Quantity
+                                        Quantity Purchased
+                                    </th>
+                                    <th style="color:white;">
+                                        Quantity Sold
+                                    </th>
+                                    <th style="color:white;">
+                                        Quantity Available
                                     </th>
                                 </tr>
                                 @foreach (var item in ViewBag.StockList)
@@ -46,6 +52,12 @@
                                     <tr>
                                         <td>
                                             @item.Product.Name
+                                        </td>
+                                        <td>
+                                            @item.Purchased
+                                        </td>
+                                        <td>
+                                            @item.Sold
                                         </td>
                                         <td>
                                             @item.Quantity

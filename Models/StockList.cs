@@ -13,6 +13,10 @@ namespace Stock_keeping.Models
         public virtual Product Product { get; set; }
         [Required]
         public int Quantity { get; set; }
+        [Required]
+        public int Purchased { get; set; }
+        [Required]
+        public int Sold { get; set; }
         public string OrgId { get; set; }
 
     }

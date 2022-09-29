@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stock_keeping.Data;
+using Stock_keeping.Models;
 using System.Security.Claims;
 
 namespace Stock_keeping.Controllers
@@ -28,5 +29,7 @@ namespace Stock_keeping.Controllers
             ViewBag.StockList = StockList;
             return View();
         }
+
+ 
     }
 }

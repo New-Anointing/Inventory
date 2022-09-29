@@ -40,9 +40,21 @@ namespace Stock_keeping.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Product product)
         {
+            var stock = new StockList();
             product.OrgId = GetOrg();
             _db.Product.Add(product);
             await _db.SaveChangesAsync();
+            var stockList = await _db.StockList.Include(p => p.Product).Where(p => p.OrgId == GetOrg()).ToListAsync();
+            stock = new StockList
+            {
+                ProductId = product.Id,
+                OrgId = GetOrg(),
+                Quantity = 0
+            };
+
+            _db.StockList.Add(stock);
+            await _db.SaveChangesAsync();
+
             return Json(new
             {
                 msg = "success"
@@ -78,6 +90,7 @@ namespace Stock_keeping.Controllers
             });
             
         }
+        
 
     }
 }
